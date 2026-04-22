@@ -1,0 +1,344 @@
+/* ======================================================================
+   Header - Pixel-matched to Figma node 1:10896 (1920×110).
+   - Single header frame, bg #ecf8f2
+   - Top row (60px): access pill + theme pill + Login pill, right-aligned
+   - Bottom row (50px): nav menu, right-aligned (ends ~130px from right)
+   - Pills: 40px height, 100px radius, white bg, 16px horizontal padding
+   - Nav text: Anek Bangla SemiBold 19px, color #17412c, item gap 24px
+====================================================================== */
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: block;
+}
+
+.site-header {
+  background: var(--primary-light);
+  border-bottom: 1px solid #d5d5d5;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.25s ease, background 0.25s ease;
+}
+
+:host(.is-scrolled) .site-header {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+  background: var(--primary-light);
+  backdrop-filter: saturate(1.1) blur(6px);
+}
+
+.header-inner {
+  max-width: 1920px;
+  margin: 0 auto;
+  height: 110px;
+  padding: 0 130px 0 130px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 32px;
+  align-items: center;
+}
+
+/* ============== LEFT: Logo block ============== */
+.logo-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.logo-mascot {
+  height: 90px;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+  display: block;
+}
+
+.logo-dept-img {
+  height: 54px;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+  display: block;
+}
+
+/* ============== RIGHT: Controls + Nav ============== */
+.header-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  gap: 10px;
+
+  &__top {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+  }
+}
+
+/* ============== Pills (access + theme) ============== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  height: 40px;
+  padding: 0 16px;
+  background: var(--pill-bg, #ffffff);
+  color: var(--primary);
+  border-radius: 100px;
+
+  &--access {
+    gap: 10px;
+    padding: 0 12px 0 16px;
+  }
+}
+
+.pill-divider {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.sr-link {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover { text-decoration: underline; }
+}
+
+.font-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    color: var(--primary);
+    padding: 2px 4px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.3px;
+    transition: background 0.15s, font-weight 0.15s;
+    border-radius: 3px;
+
+    &:hover { background: var(--primary-light); }
+    &.active { font-weight: 700; background: var(--primary-light); }
+  }
+}
+
+.lang-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+
+  span {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary);
+  }
+}
+
+.help-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+
+  &:hover svg circle { stroke: var(--accent); }
+  &:hover svg text { fill: var(--accent); }
+}
+
+/* Theme pill */
+.pill--theme {
+  gap: 12px;
+
+  .theme-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary);
+  }
+}
+
+.theme-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover { transform: scale(1.12); }
+
+  &.active { box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px var(--primary); }
+}
+
+/* Login pill */
+.login-pill {
+  height: 40px;
+  min-width: 90px;
+  padding: 0 20px;
+  background: var(--login-bg);
+  color: var(--login-text, var(--primary));
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.32px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.15s;
+
+  &:hover { filter: brightness(0.95); transform: translateY(-1px); }
+}
+
+/* ============== BOTTOM ROW: Nav ============== */
+.header-nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 50px;
+}
+
+.nav-list {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  line-height: 1.47;
+  position: relative;
+  transition: color 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 4px;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover { color: var(--primary-2); }
+  &:hover::after { transform: scaleX(1); }
+}
+
+/* ============== Mobile ============== */
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+
+  span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+}
+
+.mobile-nav {
+  background: #fff;
+  padding: 8px 24px 16px;
+  border-top: 1px solid var(--card-border);
+
+  li { border-bottom: 1px solid var(--card-border); }
+
+  &__link {
+    display: block;
+    padding: 14px 4px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+
+    &:hover { color: var(--primary-2); padding-left: 8px; }
+  }
+}
+
+/* ============== Responsive breakpoints ============== */
+@media (max-width: 1600px) {
+  .header-inner { padding: 0 40px; column-gap: 20px; }
+}
+
+@media (max-width: 1400px) {
+  .pill--access { gap: 8px; }
+  .sr-link { font-size: 12px; }
+  .font-controls button:nth-child(2) { font-size: 13px; }
+  .nav-list { gap: 14px; }
+  .nav-link { font-size: 16px; }
+}
+
+@media (max-width: 1200px) {
+  .header-inner { padding: 0 24px; height: auto; grid-template-columns: auto 1fr; }
+  .logo-mascot { height: 64px; }
+  .logo-dept-img { height: 48px; }
+}
+
+@media (max-width: 1024px) {
+  .site-header { padding: 12px 0; }
+  .header-inner { padding: 0 20px; height: auto; grid-template-columns: auto 1fr; row-gap: 10px; }
+  .header-right__top { flex-wrap: wrap; justify-content: flex-end; }
+  .header-nav { display: none; }
+  .mobile-toggle { display: flex; }
+  .logo-mascot { height: 54px; }
+  .logo-dept-img { height: 42px; }
+}
+
+@media (max-width: 768px) {
+  .header-inner { grid-template-columns: 1fr auto; }
+  .logo-dept-img { display: none; }
+  .pill--access { display: none; }
+  .theme-label { display: none; }
+}
+
+@media (max-width: 480px) {
+  .login-pill { min-width: 72px; padding: 0 14px; font-size: 14px; }
+  .pill--theme { padding: 0 10px; gap: 8px; }
+}

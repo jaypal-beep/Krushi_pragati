@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap');
+
+/* ===================== THEME VARIABLES =====================
+   Derived from Figma file "Himanshu MCP TEST" – accurate tokens:
+     primary  #174d2c   secondary #28714c   accent #f5b741
+     page bg  #ecf8f2   radii     15/16/30/40/100
+     fonts    Anek Bangla  (400 / 500 / 600 / 700)
+============================================================= */
+:root,
+[data-theme='green'] {
+  --primary: #17412c;
+  --primary-2: #28714c;
+  --primary-dark: #0f2e1e;
+  --primary-light: #ecf8f2;
+  --login-bg: #6fd460;
+  --login-bg-dark: #3aa12b;
+  --login-text: #17412c;
+  --accent: #f5b741;
+  --accent-dark: #e0a42d;
+  --highlight: #6fd460;
+  --text-primary: #1a1a1a;
+  --text-secondary: #4f5a55;
+  --text-on-primary: #ffffff;
+  --bg-page: #ffffff;
+  --bg-section-alt: #ecf8f2;
+  --bg-offerings: #17412c;
+  --card-bg: #ffffff;
+  --card-border: #a2dcbe;
+  --card-accent-border: #6fd460;
+  --card-back-bg: #17412c;
+  --pill-bg: #ffffff;
+  --social-btn-bg: #6fd460;
+  --footer-top-bg: #ffffff;
+  --navbar-bg: #ecf8f2;
+  --footer-bg: #daf1e6;
+  --footer-bar-bg: #17412c;
+  --hero-bg: #17412c;
+  --hero-highlight: #f5b741;
+  --hero-gradient: linear-gradient(180deg, #174d2c 0%, #28714c 100%);
+  --hero-overlay: linear-gradient(180deg, rgba(23, 77, 44, 0.82) 0%, rgba(40, 113, 76, 0.72) 100%);
+  --cta-primary: #6fd460;
+  --icon-bg: #ecf8f2;
+  --icon-color: #174d2c;
+  --icon-on-dark-bg: #174d2c;
+  --heading-color: #1a1a1a;
+}
+
+[data-theme='blue'] {
+  --primary: #061b2c;
+  --primary-2: #1b6cb3;
+  --primary-dark: #0b2e4d;
+  --primary-light: #e9f3fc;
+  --login-bg: #1a6bb2;
+  --login-bg-dark: #145085;
+  --login-text: #ffffff;
+  --accent: #f5b741;
+  --accent-dark: #e0a42d;
+  --highlight: #2086de;
+  --text-primary: #061b2c;
+  --text-secondary: #3d5670;
+  --text-on-primary: #ffffff;
+  --bg-page: #ffffff;
+  --bg-section-alt: #e9f3fc;
+  --bg-offerings: #0b2e4d;
+  --card-bg: #ffffff;
+  --card-border: #bcdbf5;
+  --card-accent-border: #1a6bb2;
+  --card-back-bg: #0b2e4d;
+  --pill-bg: #ffffff;
+  --social-btn-bg: #1a6bb2;
+  --footer-top-bg: #ffffff;
+  --navbar-bg: #e9f3fc;
+  --footer-bg: #d2e7f9;
+  --footer-bar-bg: #0b2e4d;
+  --hero-bg: #0b2e4d;
+  --hero-highlight: #2086de;
+  --hero-gradient: linear-gradient(180deg, #0b2e4d 0%, #1b6cb3 100%);
+  --hero-overlay: linear-gradient(180deg, rgba(11, 46, 77, 0.85) 0%, rgba(27, 108, 179, 0.72) 100%);
+  --cta-primary: #1a6bb2;
+  --icon-bg: #e9f3fc;
+  --icon-color: #0b2e4d;
+  --icon-on-dark-bg: #0b2e4d;
+  --heading-color: #061b2c;
+}
+
+[data-theme='orange'] {
+  --primary: #301403;
+  --primary-2: #783007;
+  --primary-dark: #301403;
+  --primary-light: #fdefe7;
+  --login-bg: #f3813f;
+  --login-bg-dark: #f0620f;
+  --login-text: #ffffff;
+  --accent: #f5b741;
+  --accent-dark: #e0a42d;
+  --highlight: #f3813f;
+  --text-primary: #301403;
+  --text-secondary: #5e4d42;
+  --text-on-primary: #ffffff;
+  --bg-page: #ffffff;
+  --bg-section-alt: #fdefe7;
+  --bg-offerings: #301403;
+  --card-bg: #ffffff;
+  --card-border: #f5cdb4;
+  --card-accent-border: #f3813f;
+  --card-back-bg: #301303;
+  --pill-bg: #ffffff;
+  --social-btn-bg: #f3813f;
+  --footer-top-bg: #ffffff;
+  --navbar-bg: #fdefe7;
+  --footer-bg: #fbe0d0;
+  --footer-bar-bg: #301403;
+  --hero-bg: #301403;
+  --hero-highlight: #f3813f;
+  --hero-gradient: linear-gradient(180deg, #301403 0%, #783007 100%);
+  --hero-overlay: linear-gradient(180deg, rgba(48, 20, 3, 0.85) 0%, rgba(120, 48, 7, 0.72) 100%);
+  --cta-primary: #f3813f;
+  --icon-bg: #fdefe7;
+  --icon-color: #301403;
+  --icon-on-dark-bg: #301403;
+  --heading-color: #301403;
+}
+
+[data-theme='dark'] {
+  --primary: #e6e6e6;
+  --primary-2: #404040;
+  --primary-dark: #0d0d0d;
+  --primary-light: #0d0d0d;
+  --login-bg: #6fd460;
+  --login-bg-dark: #4aaa3f;
+  --login-text: #17412c;
+  --accent: #f5b741;
+  --accent-dark: #e0a42d;
+  --highlight: #6fd460;
+  --text-primary: #e6e6e6;
+  --text-secondary: #b0b0b0;
+  --text-on-primary: #ffffff;
+  --bg-page: #0d0d0d;
+  --bg-section-alt: #0d0d0d;
+  --bg-offerings: #191919;
+  --card-bg: #1a1a1a;
+  --card-border: #333333;
+  --card-accent-border: transparent;
+  --card-back-bg: #333333;
+  --pill-bg: #262626;
+  --social-btn-bg: #404040;
+  --footer-top-bg: #262626;
+  --navbar-bg: #0d0d0d;
+  --footer-bg: #191919;
+  --footer-bar-bg: #0d0d0d;
+  --hero-bg: #0d0d0d;
+  --hero-highlight: #6fd460;
+  --hero-gradient: linear-gradient(180deg, #0d0d0d 0%, #404040 100%);
+  --hero-overlay: linear-gradient(180deg, rgba(13, 13, 13, 0.85) 0%, rgba(64, 64, 64, 0.72) 100%);
+  --cta-primary: #6fd460;
+  --icon-bg: #1a1a1a;
+  --icon-color: #6fd460;
+  --icon-on-dark-bg: #6fd460;
+  --heading-color: #ffffff;
+}
+
+/* CTA background image swap per theme (selectors live globally because
+   data-theme is set on <html> — :host-context was unreliable). */
+[data-theme='blue'] .cta-section {
+  background-image: url('/assets/images/Blue_Theme/CTA_Background.jpg') !important;
+  background-color: #9fb8d6 !important;
+}
+[data-theme='orange'] .cta-section {
+  background-image: url('/assets/images/Saffron_Theme/CTA_Background.jpg') !important;
+  background-color: #e6c09b !important;
+}
+[data-theme='dark'] .cta-section {
+  background-image: url('/assets/images/Dark_Theme/CTA_Background.jpg') !important;
+  background-color: #1a1a1a !important;
+}
+
+/* ===================== RESET ===================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* All Angular host elements should be block-level so section backgrounds span full width */
+app-root,
+app-navbar,
+app-hero,
+app-agriculture-scenario,
+app-offerings,
+app-smart-decisions,
+app-objectives,
+app-insights-advisories,
+app-footer {
+  display: block;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Anek Bangla', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; }
+
+/* ===================== UTILITIES ===================== */
+.container {
+  width: 100%;
+  max-width: 1660px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 54px;
+  font-weight: 500;
+  color: var(--primary);
+  line-height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+
+  .accent { color: var(--highlight); font-weight: 700; }
+  .primary { color: var(--highlight); font-weight: 700; }
+
+  .star {
+    color: #f5b741;
+    font-size: 34px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+}
+
+/* ===================== SCROLLBAR ===================== */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-section-alt); }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+/* ===================== RESPONSIVE TYPE ===================== */
+@media (max-width: 1200px) {
+  .container { padding: 0 32px; }
+  .section-title { font-size: 42px; line-height: 52px; gap: 24px; .star { font-size: 28px; } }
+}
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  .section-title { font-size: 28px; line-height: 36px; gap: 14px; .star { font-size: 20px; } }
+}
+@media (max-width: 480px) {
+  .section-title { font-size: 22px; line-height: 28px; gap: 10px; .star { font-size: 16px; } }
+}

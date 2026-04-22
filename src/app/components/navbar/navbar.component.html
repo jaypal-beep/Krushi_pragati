@@ -1,0 +1,109 @@
+<header class="site-header">
+  <div class="header-inner">
+    <!-- LEFT: Logo block — Krushi Pragati + Directorate of Agriculture -->
+    <a href="#" class="logo-block" aria-label="Directorate of Agriculture - Home">
+      <img
+        src="assets/images/logo.png"
+        alt="Krushi Pragati"
+        class="logo-mascot"
+        width="90"
+        height="76"
+      />
+      <img
+        [src]="asset('assets/images/directore-of-agriculture.png')"
+        alt="Directorate of Agriculture, Agriculture, Farmers Welfare and Co-operation Department, Government of Gujarat"
+        class="logo-dept-img"
+      />
+    </a>
+
+    <!-- RIGHT: two-row block (top=controls, bottom=menu) -->
+    <div class="header-right">
+      <!-- TOP ROW: pill containers + login -->
+      <div class="header-right__top">
+        <!-- Screen reader / A- A A+ / English / Help pill -->
+        <div class="pill pill--access">
+          <a href="javascript:void(0)" class="sr-link">Screen Reader Access</a>
+          <div class="font-controls">
+            <button (click)="setFontSize('small')" [class.active]="fontSize() === 'small'" aria-label="Decrease font size">A-</button>
+            <button (click)="setFontSize('normal')" [class.active]="fontSize() === 'normal'" aria-label="Normal font size">A</button>
+            <button (click)="setFontSize('large')" [class.active]="fontSize() === 'large'" aria-label="Increase font size">A+</button>
+          </div>
+          <div class="lang-dropdown" tabindex="0">
+            <span>English</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" />
+            </svg>
+          </div>
+          <button class="help-btn" aria-label="Help">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="10" stroke="currentColor" stroke-width="1.5" fill="none" />
+              <text x="11" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" font-family="Anek Bangla, sans-serif">?</text>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Theme pill -->
+        <div class="pill pill--theme">
+          <span class="theme-label">Theme:</span>
+          @for (theme of themes; track theme) {
+            <button
+              class="theme-swatch"
+              [style.background-color]="themeColors[theme]"
+              [class.active]="currentTheme() === theme"
+              (click)="setTheme(theme)"
+              [attr.aria-label]="'Switch to ' + theme + ' theme'"
+            >
+              @if (currentTheme() === theme) {
+                <svg width="12" height="10" viewBox="0 0 12 10" fill="none" aria-hidden="true">
+                  <path d="M1 5l3.5 3.5L11 1.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              }
+            </button>
+          }
+        </div>
+
+        <!-- Login pill -->
+        <button class="login-pill" type="button">Login</button>
+
+        <!-- Mobile toggle -->
+        <button
+          class="mobile-toggle"
+          (click)="toggleMobileMenu()"
+          [attr.aria-expanded]="mobileMenuOpen()"
+          aria-label="Toggle navigation menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+      <!-- BOTTOM ROW: nav menu -->
+      <nav class="header-nav" role="navigation" aria-label="Primary">
+        <ul class="nav-list">
+          @for (item of navItems; track item.label) {
+            <li>
+              <a [href]="item.link" class="nav-link">
+                {{ item.label }}
+                @if (item.hasDropdown) {
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
+                    <path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile dropdown nav -->
+  @if (mobileMenuOpen()) {
+    <ul class="mobile-nav">
+      @for (item of navItems; track item.label) {
+        <li>
+          <a [href]="item.link" class="mobile-nav__link">{{ item.label }}</a>
+        </li>
+      }
+    </ul>
+  }
+</header>

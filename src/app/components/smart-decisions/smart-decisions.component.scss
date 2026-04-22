@@ -1,0 +1,136 @@
+/* ==========================================================
+   Empowering Every Farm with Smart Decisions — CTA
+   Figma (within Frame 62):
+     Title "Empowering\nEvery Farm with Smart Decisions"
+       Anek Bangla 54/66 — Medium 500, "Smart Decisions" Bold 700
+       color #17412c
+     Subtext 22/34 Medium 500 color #17412c
+     Gap title→subtext 20, gap subtext→buttons 40
+     Buttons 56 tall, radius 100; Farmer #6fd460 / Officer #f5b741
+       Text Anek Bangla Bold 16/24 letter-spacing 0.32 color #17412c
+       Arrow icon 48×48 white circle on right
+========================================================== */
+.smart {
+  padding: 130px 0 80px;
+}
+
+.smart__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 1003px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.smart__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 54px;
+  font-weight: 500;
+  line-height: 66px;
+  color: var(--primary, #17412c);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.smart__title-line { display: block; }
+
+.smart__title-bold { font-weight: 700; }
+
+.smart__subtext {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 34px;
+  color: var(--primary, #17412c);
+  margin: 0;
+  max-width: 1003px;
+}
+
+/* --- Buttons --- */
+.smart__actions {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.smart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 4px 4px 16px;
+  border-radius: 100px;
+  font-family: 'Anek Bangla', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  color: var(--primary, #17412c);
+  text-decoration: none;
+  height: 56px;
+  cursor: pointer;
+  transition: filter 0.3s ease, transform 0.15s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  & > span:first-child {
+    padding: 0 8px 0 4px;
+  }
+
+  &__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  &--farmer {
+    background: var(--login-bg, #6fd460);
+    color: var(--login-text, var(--primary, #17412c));
+
+    &:hover {
+      filter: brightness(0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    &:hover .smart-btn__arrow { transform: translateX(4px); }
+  }
+
+  &--officer {
+    background: #f5b741;
+    color: #302103;
+
+    &:hover {
+      filter: brightness(0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(245, 183, 65, 0.4);
+    }
+
+    &:hover .smart-btn__arrow { transform: translateX(4px); }
+  }
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .smart { padding: 96px 0 64px; }
+  .smart__title { font-size: 42px; line-height: 52px; }
+  .smart__subtext { font-size: 18px; line-height: 28px; }
+}
+@media (max-width: 640px) {
+  .smart { padding: 64px 0 48px; }
+  .smart__title { font-size: 30px; line-height: 38px; }
+  .smart__subtext { font-size: 15px; line-height: 22px; }
+  .smart__actions { gap: 14px; flex-direction: column; align-items: stretch; }
+  .smart-btn { height: 48px; font-size: 14px; }
+  .smart-btn__arrow { width: 40px; height: 40px; }
+}

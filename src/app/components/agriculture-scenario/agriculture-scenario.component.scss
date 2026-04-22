@@ -1,0 +1,217 @@
+/* ==========================================================
+   Gujarat's Agriculture Scenario — Figma-verified colors
+   Palette (from Figma node 1:10813):
+     - Section bg (inherited):  #ecf8f2
+     - Card front bg:           #ffffff
+     - Card border stroke:      #6fd460 (light green)
+     - Card back bg:            #17412c (dark green)
+     - Title / body text:       #17412c  (on white)
+     - Back face text:          #ffffff
+     - Stars / accent:          #f5b741
+   Card: 393×315, radius 30, padding 60/30, icon 80×80,
+         title 28/700 lh36, desc 18/500 lh26
+========================================================== */
+.scenario-section {
+  padding: 88px 0 96px;
+  background: var(--bg-section-alt);
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.scenario-card {
+  position: relative;
+  perspective: 1400px;
+  height: 315px;
+  cursor: pointer;
+  outline: none;
+
+  &:focus-visible .scenario-card__inner {
+    box-shadow: 0 0 0 3px var(--accent);
+    border-radius: 30px;
+  }
+}
+
+.scenario-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0.1, 0.2, 1);
+  border-radius: 30px;
+}
+
+.scenario-card:hover .scenario-card__inner,
+.scenario-card:focus-visible .scenario-card__inner {
+  transform: rotateY(180deg);
+}
+
+.scenario-card__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 30px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== FRONT (default) ========== */
+.scenario-card__face--front {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--card-accent-border, #6fd460);
+  padding: 60px 30px;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 15px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.scenario-card:hover .scenario-card__face--front {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.scenario-card__icon {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  user-select: none;
+  transition: transform 0.35s ease;
+  flex-shrink: 0;
+}
+
+.scenario-card:hover .scenario-card__icon {
+  transform: scale(1.05);
+}
+
+.scenario-card__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  color: var(--primary, #17412c);
+  margin: 0;
+}
+
+.scenario-card__desc {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  color: var(--primary, #17412c);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========== BACK (hover state) ========== */
+.scenario-card__face--back {
+  background: var(--card-back-bg, #17412c);
+  border: 1px solid var(--login-bg, #6fd460);
+  transform: rotateY(180deg);
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  padding: 60px 30px;
+  gap: 15px;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.35);
+}
+
+.scenario-card__title--back {
+  color: #ffffff;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.scenario-card__desc--back {
+  color: #ffffff;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  max-width: 94%;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  display: block;
+  overflow: visible;
+}
+
+.scenario-card__bg-icon {
+  position: absolute;
+  right: -14px;
+  bottom: -14px;
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  opacity: 0.16;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
+
+.scenario-card__accent {
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  right: 30px;
+  height: 3px;
+  background: var(--login-bg);
+  border-radius: 2px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease 0.45s, transform 0.3s ease 0.45s;
+}
+
+.scenario-card:hover .scenario-card__accent,
+.scenario-card:focus-visible .scenario-card__accent {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 1200px) {
+  .scenario-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .scenario-section { padding: 56px 0 64px; }
+  .scenario-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .scenario-card { height: 290px; }
+  .scenario-card__face--front,
+  .scenario-card__face--back { padding: 40px 22px; }
+  .scenario-card__icon { width: 72px; height: 72px; }
+  .scenario-card__title, .scenario-card__title--back { font-size: 22px; line-height: 28px; }
+  .scenario-card__desc, .scenario-card__desc--back { font-size: 15px; line-height: 22px; }
+  .scenario-card__bg-icon { width: 120px; height: 120px; }
+}
+@media (max-width: 480px) {
+  .scenario-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+  .scenario-card { height: 280px; }
+}
+
+/* Reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .scenario-card__inner { transition: none; }
+  .scenario-card:hover .scenario-card__inner,
+  .scenario-card:focus-visible .scenario-card__inner { transform: none; }
+  .scenario-card:hover .scenario-card__face--front,
+  .scenario-card:focus-visible .scenario-card__face--front { opacity: 0; }
+  .scenario-card:hover .scenario-card__face--back,
+  .scenario-card:focus-visible .scenario-card__face--back { transform: none; }
+}

@@ -1,0 +1,233 @@
+/* ==========================================================
+   Footer — Figma-verified pixel-perfect
+   Section bg #ecf8f2 (mint)
+   Top white box: radius 16, padding 30, contains logo + follow us
+   Logo: 50px image + title "Directorate of Agriculture" Bold + 2-line subtitle Medium
+   Social icons: 48×48 green squares (#6fd460), white icons, radius 10
+   Quick Links: 4 columns, heading 20/28 Bold #17412c, links 20/500 #17412c
+   Other Links: 3 columns, same typography, border-top #a2dcc0
+   Bottom copyright: 16/24 SemiBold #17412c, accent numbers/date #6fd460
+========================================================== */
+.site-footer {
+  background: var(--footer-bg, #daf1e6);
+  padding: 80px 0 0;
+  color: var(--primary, #17412c);
+  font-family: 'Anek Bangla', sans-serif;
+}
+
+/* -------- TOP WHITE BOX -------- */
+.footer-top {
+  background: var(--footer-top-bg, #ffffff);
+  border-radius: 16px;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.footer-top__logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+
+  &:hover { opacity: 0.88; }
+}
+
+.footer-top__logo-img {
+  height: 72px;
+  width: auto;
+  max-width: 100%;
+  display: block;
+  user-select: none;
+}
+
+.footer-top__social {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-top__follow {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  color: var(--primary, #17412c);
+}
+
+.social-list {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--social-btn-bg, var(--login-bg, #6fd460));
+  color: var(--login-text, var(--primary, #17412c));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+
+  svg { transition: transform 0.25s ease; }
+
+  &:hover {
+    background: var(--primary, #17412c);
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+
+    svg { transform: scale(1.1); }
+  }
+}
+
+/* -------- LINK COLUMNS -------- */
+.footer-links {
+  padding: 30px 0;
+
+  &--other {
+    border-top: 1px solid var(--card-border, #a2dcbe);
+  }
+}
+
+.footer-links__heading {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--primary, #17412c);
+  margin: 0 0 18px;
+}
+
+.footer-links__grid {
+  display: grid;
+  gap: 30px;
+
+  &--four { grid-template-columns: repeat(4, 1fr); }
+  &--three { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Empty column holder so Other Links align with Quick Links col 1–3 */
+.footer-links__col--empty {
+  list-style: none;
+}
+
+.footer-links__col {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  a {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    color: var(--primary, #17412c);
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    transition: color 0.25s ease, transform 0.25s ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 2px;
+      background: var(--highlight, #6fd460);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.25s ease;
+    }
+
+    &:hover {
+      color: var(--highlight, #6fd460);
+      transform: translateX(4px);
+
+      &::after { transform: scaleX(1); }
+    }
+  }
+}
+
+/* -------- BOTTOM COPYRIGHT -------- */
+.footer-bottom {
+  border-top: 1px solid var(--card-border, #a2dcbe);
+  padding: 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  &__copy {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: var(--primary, #17412c);
+    margin: 0;
+  }
+
+  &__stats {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: var(--primary, #17412c);
+
+    .stat-value {
+      color: var(--highlight, #6fd460);
+      font-weight: 700;
+    }
+
+    .divider {
+      color: var(--primary, #17412c);
+      opacity: 0.5;
+    }
+  }
+}
+
+/* Dark theme: social button icons are white on the #404040 tile, and
+   the hover should darken (not lighten — the default rule uses --primary
+   which is near-white in dark). */
+:host-context([data-theme='dark']) .social-btn {
+  color: #ffffff;
+
+  &:hover {
+    background: var(--login-bg);
+    color: var(--login-text);
+  }
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 1100px) {
+  .footer-links__grid--four { grid-template-columns: repeat(2, 1fr); }
+  .footer-links__grid--three { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .site-footer { padding: 40px 0 20px; }
+  .footer-top { padding: 20px 18px; flex-direction: column; align-items: flex-start; }
+  .footer-top__follow { font-size: 17px; }
+  .footer-links__heading { font-size: 19px; }
+  .footer-links__col a { font-size: 16px; line-height: 24px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .footer-bottom__copy, .footer-bottom__stats { font-size: 14px; line-height: 20px; }
+}
+
+@media (max-width: 480px) {
+  .footer-links__grid--four { grid-template-columns: 1fr; }
+  .footer-links__grid--three { grid-template-columns: 1fr; }
+  .footer-top__logo-img { height: 56px; }
+  .social-btn { width: 38px; height: 38px; border-radius: 8px; }
+}

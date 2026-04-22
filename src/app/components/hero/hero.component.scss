@@ -1,0 +1,320 @@
+/* ======================================================================
+   Hero / Banner — Slider with 3 banners
+   - Solid bg #17412c
+   - Heading 64/500 white, highlight 64/700 #f5b741
+   - Subtext 20/400 white, line-height 28, max-width ~720
+   - Image band ~1670×650, rounded 30px, concave notch top-center
+   - Text + image cross-fade with slight rise
+   - Dots (bottom-center) + arrows (bottom-right)
+   - Auto-advance 6s, pauses on hover
+====================================================================== */
+
+.hero {
+  position: relative;
+  background: var(--hero-bg, var(--primary));
+  color: #fff;
+  padding: 64px 0 96px;
+  overflow: hidden;
+}
+
+/* ============== Text content (grid cross-fade stack) ============== */
+.hero__content {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 60px 72px; /* bottom padding reserves space for buttons in notch */
+  text-align: center;
+  display: grid;
+  grid-template-areas: 'stack';
+  justify-items: center;
+}
+
+.hero__slide-text {
+  grid-area: stack;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition-delay: 0.1s;
+  }
+}
+
+.hero__heading {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 64px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.4px;
+  color: #fff;
+  max-width: 1200px;
+}
+
+.hero__highlight {
+  color: var(--hero-highlight, var(--accent));
+  font-weight: 700;
+}
+
+.hero__subtext {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 720px;
+}
+
+/* ============== Image band with curved notch ============== */
+.hero__image-wrap {
+  position: relative;
+  max-width: 1550px;
+  margin: 0 60px;
+  margin-left: auto;
+  margin-right: auto;
+  aspect-ratio: 1670 / 650;
+  background: var(--hero-bg, #17412c);
+}
+
+.hero__clip-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.hero__image-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  -webkit-clip-path: url(#hero-notch);
+  clip-path: url(#hero-notch);
+  background: var(--hero-bg, #17412c);
+}
+
+.hero__image-fallback {
+  position: absolute;
+  inset: 0;
+  background: var(--hero-bg, #17412c);
+}
+
+.hero__bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  user-select: none;
+
+  &.active { opacity: 1; }
+}
+
+/* ============== Buttons in the notch ============== */
+.hero__actions {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 2;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 100px;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.32px;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+
+  &__arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    font-size: 18px;
+  }
+
+  &--farmer {
+    background: var(--login-bg);
+    color: var(--login-text, var(--primary));
+    &:hover { filter: brightness(0.95); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); }
+  }
+
+  &--officer {
+    background: var(--accent);
+    color: #302103;
+    &:hover { filter: brightness(0.95); transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); }
+  }
+}
+
+/* ============== Prev/next arrows ============== */
+.hero__img-arrows {
+  position: absolute;
+  bottom: 22px;
+  right: 84px;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+}
+
+.img-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.15s;
+
+  &:hover { background: rgba(255, 255, 255, 0.3); transform: scale(1.05); }
+  &:active { transform: scale(0.95); }
+}
+
+/* ============== Dot indicators ============== */
+.hero__dots {
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.hero-dot {
+  width: 32px;
+  height: 4px;
+  border-radius: 2px;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  transition: background 0.3s;
+
+  &.active { background: rgba(255, 255, 255, 0.45); }
+
+  &__fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+
+    &.active {
+      animation: dot-fill 6s linear forwards;
+    }
+  }
+
+  &:hover:not(.active) { background: rgba(255, 255, 255, 0.55); }
+}
+
+@keyframes dot-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Pause dot fill when the hero is hovered (matches autoplay pause) */
+.hero:hover .hero-dot__fill.active {
+  animation-play-state: paused;
+}
+
+/* ============== Floating a11y buttons ============== */
+.hero__a11y {
+  position: absolute;
+  right: 20px;
+  top: 42%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.a11y-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover { transform: scale(1.1); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+
+  &--access {
+    background: var(--login-bg);
+    color: var(--primary);
+  }
+}
+
+/* ============== Responsive ============== */
+@media (max-width: 1400px) {
+  .hero { padding: 48px 0 72px; }
+  .hero__heading { font-size: 52px; }
+  .hero__image-wrap { margin-left: 40px; margin-right: 40px; }
+  .hero__img-arrows { right: 24px; }
+}
+
+@media (max-width: 1024px) {
+  .hero { padding: 40px 0 64px; }
+  .hero__heading { font-size: 40px; }
+  .hero__subtext { font-size: 18px; line-height: 26px; }
+  .hero__content { padding: 0 32px 56px; }
+  .hero__slide-text { padding: 0 32px; gap: 16px; }
+  .hero__image-wrap { margin-left: 24px; margin-right: 24px; }
+  .hero__img-arrows { right: 16px; bottom: 16px; }
+  .hero__dots { bottom: 20px; }
+  .hero__a11y { display: none; }
+}
+
+@media (max-width: 768px) {
+  .hero__heading { font-size: 28px; }
+  .hero__subtext { font-size: 14px; line-height: 20px; }
+  .hero__content { padding-bottom: 48px; }
+  .hero__actions { top: -20px; gap: 10px; }
+  .hero-btn { height: 40px; padding: 0 16px; font-size: 13px; }
+  .hero-btn__arrow { width: 16px; height: 16px; font-size: 14px; }
+  .hero__image-wrap { margin-left: 16px; margin-right: 16px; aspect-ratio: 4 / 3; }
+  .hero__img-arrows { right: 12px; }
+  .hero-dot { width: 24px; }
+}
+
+@media (max-width: 480px) {
+  .hero__heading { font-size: 22px; }
+  .hero__actions { flex-direction: column; top: -16px; }
+  .hero-btn { height: 36px; font-size: 12px; }
+  .hero-btn__arrow { width: 14px; height: 14px; font-size: 12px; }
+}

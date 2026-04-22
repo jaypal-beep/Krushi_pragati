@@ -1,0 +1,103 @@
+<section class="offerings" aria-labelledby="offerings-heading">
+  <div class="container">
+    <!-- Title with ornaments -->
+    <div class="offerings__header">
+      <div class="ornament ornament--left" aria-hidden="true">
+        <span class="ornament__line"></span>
+        <svg class="ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="#f5b741" aria-hidden="true">
+          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+        </svg>
+      </div>
+      <h2 class="offerings__title" id="offerings-heading">
+        <span class="offerings__title--base">What We </span><span class="offerings__title--accent">Offerings</span>
+      </h2>
+      <div class="ornament ornament--right" aria-hidden="true">
+        <svg class="ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="#f5b741" aria-hidden="true">
+          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+        </svg>
+        <span class="ornament__line ornament__line--reverse"></span>
+      </div>
+    </div>
+
+    <div class="offerings__main">
+      <!-- LEFT text column: 3 text blocks at y-positions matching icons -->
+      <div class="text-col text-col--left">
+        @for (item of leftOfferings; track item.key; let i = $index) {
+          <div
+            class="text-row"
+            [class.text-row--top]="i === 0"
+            [class.text-row--mid]="i === 1"
+            [class.text-row--bot]="i === 2"
+            [class.is-active]="activeKey() === item.key"
+            (mouseenter)="activate(item.key)"
+          >
+            <h3 class="offering-title">{{ item.title }}</h3>
+            <p class="offering-desc">{{ item.description }}</p>
+            <a [href]="item.link" class="offering-link">
+              View More
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+                <path d="M1 6h15m0 0l-5-5m5 5l-5 5" stroke="#6fd460" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+        }
+      </div>
+
+      <!-- CENTER: tree stage with absolute-positioned icon slots -->
+      <div class="tree-stage">
+        <img class="tree-bg" [src]="asset(treeImage)" alt="" aria-hidden="true" />
+
+        <!-- 6 icon slots positioned to exact tree circle positions -->
+        @for (item of leftOfferings; track item.key; let i = $index) {
+          <div
+            class="icon-slot icon-slot--left"
+            [class.icon-slot--top]="i === 0"
+            [class.icon-slot--mid]="i === 1"
+            [class.icon-slot--bot]="i === 2"
+            [class.is-active]="activeKey() === item.key"
+            (mouseenter)="activate(item.key)"
+          >
+            <img class="icon-slot__img icon-slot__img--default" [src]="asset(item.iconDefault)" [alt]="item.title + ' icon'" />
+            <img class="icon-slot__img icon-slot__img--hover" [src]="asset(item.iconHover)" alt="" aria-hidden="true" />
+          </div>
+        }
+        @for (item of rightOfferings; track item.key; let i = $index) {
+          <div
+            class="icon-slot icon-slot--right"
+            [class.icon-slot--top]="i === 0"
+            [class.icon-slot--mid]="i === 1"
+            [class.icon-slot--bot]="i === 2"
+            [class.is-active]="activeKey() === item.key"
+            (mouseenter)="activate(item.key)"
+          >
+            <img class="icon-slot__img icon-slot__img--default" [src]="asset(item.iconDefault)" [alt]="item.title + ' icon'" />
+            <img class="icon-slot__img icon-slot__img--hover" [src]="asset(item.iconHover)" alt="" aria-hidden="true" />
+          </div>
+        }
+      </div>
+
+      <!-- RIGHT text column -->
+      <div class="text-col text-col--right">
+        @for (item of rightOfferings; track item.key; let i = $index) {
+          <div
+            class="text-row"
+            [class.text-row--top]="i === 0"
+            [class.text-row--mid]="i === 1"
+            [class.text-row--bot]="i === 2"
+            [class.is-active]="activeKey() === item.key"
+            (mouseenter)="activate(item.key)"
+          >
+            <h3 class="offering-title">{{ item.title }}</h3>
+            <p class="offering-desc">{{ item.description }}</p>
+            <a [href]="item.link" class="offering-link">
+              View More
+              <svg width="18" height="12" viewBox="0 0 18 12" fill="none" aria-hidden="true">
+                <path d="M1 6h15m0 0l-5-5m5 5l-5 5" stroke="#6fd460" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

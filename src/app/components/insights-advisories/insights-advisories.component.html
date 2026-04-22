@@ -1,0 +1,44 @@
+<section class="insights" aria-labelledby="insights-heading">
+  <div class="container">
+    <div class="insights__header">
+      <h2 class="insights__title" id="insights-heading">
+        <svg class="insights__star" width="34" height="34" viewBox="0 0 34 34" fill="#f5b741" aria-hidden="true">
+          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+        </svg>
+        <span class="insights__title-base">Annual </span><span class="insights__title-accent">Insights &amp; Advisories</span>
+        <svg class="insights__star" width="34" height="34" viewBox="0 0 34 34" fill="#f5b741" aria-hidden="true">
+          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+        </svg>
+      </h2>
+      <p class="insights__subtitle">
+        The Agriculture Monitoring System provides support to farmers, officials and stake holders,
+        driving informed decisions for improved productivity and sustainability in Gujarat's farming
+        communities.
+      </p>
+    </div>
+
+    <div class="insights__block">
+      <h3 class="insights__block-label">Insights</h3>
+      <div class="insights__grid">
+        @for (item of insights; track item.label) {
+          <div class="icon-card icon-card--insight">
+            <img class="icon-card__icon" [src]="asset(item.icon)" [alt]="item.label + ' icon'" loading="lazy" />
+            <span class="icon-card__label">{{ item.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="insights__block">
+      <h3 class="insights__block-label">Advisories</h3>
+      <div class="insights__grid">
+        @for (item of advisories; track item.label) {
+          <div class="icon-card icon-card--advisory">
+            <img class="icon-card__icon" [src]="asset(item.icon)" [alt]="item.label + ' icon'" loading="lazy" />
+            <span class="icon-card__label">{{ item.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

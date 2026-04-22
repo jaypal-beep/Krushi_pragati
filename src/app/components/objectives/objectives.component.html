@@ -1,0 +1,56 @@
+<section class="objectives" aria-labelledby="objectives-heading">
+  <div class="container">
+    <!-- Title + nav row -->
+    <div class="objectives__head">
+      <h2 class="objectives__title" id="objectives-heading">
+        <span class="objectives__title-base">Objectives of </span><span class="objectives__title-accent">DAG</span>
+      </h2>
+
+      <div class="objectives__nav" role="group" aria-label="Scroll objectives">
+        <button
+          class="nav-btn"
+          type="button"
+          [disabled]="!canPrev()"
+          (click)="scroll('prev')"
+          aria-label="Previous"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button
+          class="nav-btn"
+          type="button"
+          [disabled]="!canNext()"
+          (click)="scroll('next')"
+          aria-label="Next"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Horizontal scroller with cards -->
+    <div class="objectives__scroller" #scroller (scroll)="onScroll()">
+      <div class="objectives__track">
+        @for (obj of objectives; track obj.title) {
+          <article class="objective-card">
+            <div class="objective-card__image-wrap">
+              <img class="objective-card__image" [src]="asset(obj.image)" [alt]="obj.title" loading="lazy" />
+            </div>
+            <h3 class="objective-card__title">{{ obj.title }}</h3>
+            <p class="objective-card__desc">{{ obj.description }}</p>
+            <a href="#" class="objective-card__link" tabindex="-1">
+              View More
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 10h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>

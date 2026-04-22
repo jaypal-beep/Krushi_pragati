@@ -1,0 +1,183 @@
+/* ==========================================================
+   Annual Insights & Advisories — Figma-verified pixel-perfect
+   Section (Frame 63):
+     - bg #ecf8f2 (same mint as other sections)
+     - Wide container 1660px max
+   Title "Annual Insights & Advisories":
+     - Anek Bangla 54/66, "Annual " weight 500 #17412c,
+       "Insights & Advisories" weight 700 #6fd460
+     - 34×34 gold stars (#f5b741) on each side, 40px gap
+   Subtitle: Anek Bangla 18/26 weight 500 #17412c
+   Section labels "Insights" / "Advisories":
+     - Anek Bangla 24/32 weight 700 #17412c
+   Cards (6 per row, 30px gap):
+     - white bg, radius 15, padding 30, no shadow
+     - Icon 64×64 centered, label Anek Bangla 20/28 600 #17412c
+========================================================== */
+.insights {
+  background: var(--bg-section-alt, #ecf8f2);
+  padding: 88px 0 96px;
+}
+
+.insights__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.insights__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 54px;
+  line-height: 66px;
+  font-weight: 500;
+  color: var(--primary, #17412c);
+  margin: 0 0 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.insights__title-base { color: var(--primary, #17412c); font-weight: 500; }
+.insights__title-accent { color: var(--highlight, #6fd460); font-weight: 700; }
+
+.insights__star { flex-shrink: 0; }
+
+.insights__subtitle {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  color: var(--primary, #17412c);
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+/* -------- Blocks -------- */
+.insights__block {
+  margin-bottom: 44px;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.insights__block-label {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  color: var(--primary, #17412c);
+  margin: 0 0 20px;
+  letter-spacing: 0.2px;
+}
+
+.insights__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 30px;
+}
+
+/* -------- Icon card --------
+   Default: white bg, 15px radius, invisible border placeholder.
+   Hover (Figma Frame 97 variant):
+     Insights → gold bg #f5b741 + 3px border #c2831a, text stays dark #17412c
+     Advisories → green bg #6fd460 + 3px border #3aa12b, text stays dark #17412c
+   300ms EASE_OUT transition to match Figma. */
+.icon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 15px;
+  padding: 30px 30px;
+  background: var(--card-bg, #ffffff);
+  border-radius: 15px;
+  /* invisible matched border reserves the 3px growth slot so hover doesn't jump */
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: background 0.3s ease-out, border-color 0.3s ease-out, transform 0.3s ease-out;
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    user-select: none;
+    transition: transform 0.3s ease-out;
+  }
+
+  &__label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    color: var(--primary, #17412c);
+    white-space: pre-line;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+
+    .icon-card__icon { transform: scale(1.05); }
+  }
+
+  /* INSIGHT hover — gold */
+  &--insight:hover {
+    background: #f5b741;
+    border-color: #c2831a;
+  }
+
+  /* ADVISORY hover — green */
+  &--advisory:hover {
+    background: var(--login-bg, #6fd460);
+    border-color: var(--login-bg-dark, #3aa12b);
+  }
+}
+
+/* Blue & Saffron themes: both Insights and Advisories share a single
+   themed hover (bg = --login-bg, border = --login-bg-dark, white label),
+   per Figma. Green keeps the distinct gold / green hover above. */
+:host-context([data-theme='blue']) .icon-card,
+:host-context([data-theme='orange']) .icon-card {
+  &--insight:hover,
+  &--advisory:hover {
+    background: var(--login-bg);
+    border-color: var(--login-bg-dark);
+
+    .icon-card__label { color: #ffffff; }
+  }
+}
+
+/* Dark theme: hover variant is #333333 card bg with green accent border,
+   white label — both Insights and Advisories share the same swap. */
+:host-context([data-theme='dark']) .icon-card {
+  &--insight:hover,
+  &--advisory:hover {
+    background: #333333;
+    border-color: var(--login-bg);
+
+    .icon-card__label { color: #ffffff; }
+  }
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 1400px) {
+  .insights__grid { gap: 20px; }
+  .icon-card { padding: 22px 14px; }
+  .icon-card__label { font-size: 18px; line-height: 24px; }
+}
+
+@media (max-width: 1100px) {
+  .insights__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .insights { padding: 56px 0 64px; }
+  .insights__title { font-size: 32px; line-height: 42px; gap: 18px; }
+  .insights__star { width: 22px; height: 22px; }
+  .insights__subtitle { font-size: 15px; line-height: 22px; }
+  .insights__block-label { font-size: 20px; line-height: 26px; }
+  .icon-card__icon { width: 52px; height: 52px; }
+}
+
+@media (max-width: 560px) {
+  .insights__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}

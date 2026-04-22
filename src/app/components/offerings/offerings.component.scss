@@ -1,0 +1,288 @@
+/* ==========================================================
+   What We Offerings — pixel-aligned to Figma & tree SVG
+   Tree SVG: 442×701 — already contains 6 baked-in dark circles
+     at (0,0), (319,0), (0,236), (319,236), (0,472), (319,472).
+   Icon centers in tree coords: (61.5, 61.5) (380.5, 61.5)
+                                (61.5, 297.5) (380.5, 297.5)
+                                (61.5, 533.5) (380.5, 533.5)
+   Icon slots overlay these exact circles.
+   On hover: a white circle fades in over the dark circle and
+   icon default fades out, hover icon fades in.
+   Active offering is tracked by a signal so hovering text in one
+   column highlights the matching icon in the tree column.
+========================================================== */
+
+.offerings {
+  background: var(--bg-offerings, #17412c);
+  padding: 80px 0 0;
+  overflow: hidden;
+}
+
+/* -------- Title header -------- */
+.offerings__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 56px;
+}
+
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: -4px;
+  height: 34px;
+
+  &__line {
+    width: 90px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--bg-offerings, #17412c) 0%, #f5b741 100%);
+    display: inline-block;
+
+    &--reverse { background: linear-gradient(90deg, #f5b741 0%, var(--bg-offerings, #17412c) 100%); }
+  }
+
+  &__star { flex-shrink: 0; margin-left: -4px; }
+  &--right .ornament__star { margin-left: 0; margin-right: -4px; }
+}
+
+.offerings__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 54px;
+  line-height: 66px;
+  font-weight: 500;
+  margin: 0;
+
+  &--base { color: #ffffff; font-weight: 500; }
+  &--accent { color: var(--highlight, #6fd460); font-weight: 700; }
+}
+
+/* -------- Main grid: [left-text] [tree] [right-text] -------- */
+.offerings__main {
+  display: grid;
+  grid-template-columns: 1fr 442px 1fr;
+  column-gap: 40px;
+  align-items: stretch;
+  max-width: 1306px;
+  margin: 0 auto;
+  min-height: 701px;
+}
+
+/* -------- Tree stage (center) -------- */
+.tree-stage {
+  position: relative;
+  width: 442px;
+  height: 701px;
+  align-self: start;
+}
+
+.tree-bg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 6 icon slots positioned exactly over the tree's baked-in circles */
+.icon-slot {
+  position: absolute;
+  width: 123px;
+  height: 123px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* White circle fills in on hover/active */
+.icon-slot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.icon-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 80px;
+  height: 80px;
+  margin: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+  user-select: none;
+  pointer-events: none;
+  z-index: 2;
+
+  &--hover { opacity: 0; }
+}
+
+/* X-axis positions: left edge OR right edge of tree (319 in SVG coords) */
+.icon-slot--left { left: 0; }
+.icon-slot--right { left: 319px; }
+
+/* Y-axis positions: 0 / 236 / 472 matching tree SVG circle positions */
+.icon-slot--top { top: 0; }
+.icon-slot--mid { top: 236px; }
+.icon-slot--bot { top: 472px; }
+
+/* Active / hover state */
+.icon-slot.is-active,
+.icon-slot:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+
+  &::before { opacity: 1; }
+
+  .icon-slot__img--default { opacity: 0; }
+  .icon-slot__img--hover { opacity: 1; }
+}
+
+/* -------- Text columns -------- */
+.text-col {
+  position: relative;
+  min-height: 701px;
+}
+
+.text-row {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  cursor: pointer;
+
+  /* Centered on icon centers y = 61.5 / 297.5 / 533.5 → top = center - ~88px (half of 176) */
+  &--top { top: -26px; }
+  &--mid { top: 210px; }
+  &--bot { top: 446px; }
+}
+
+.text-col--left .text-row { text-align: right; align-items: flex-end; padding-right: 40px; }
+.text-col--right .text-row { text-align: left; align-items: flex-start; padding-left: 40px; }
+
+.offering-title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  color: #ffffff;
+  margin: 0;
+  white-space: pre-line;
+  transition: color 0.3s ease;
+  max-width: 392px;
+}
+
+.text-row.is-active .offering-title {
+  color: #f5b741;
+}
+
+/* Dark theme: active offering title turns green, per Figma. */
+:host-context([data-theme='dark']) .text-row.is-active .offering-title {
+  color: var(--highlight);
+}
+
+/* Dark theme icon slots use an explicit gray disc + green ring overlay,
+   per Figma spec (bg #4D4D4D, border 2px #6FD460). Other themes keep
+   the tree SVG's baked-in circles. */
+:host-context([data-theme='dark']) .icon-slot {
+  background: #4d4d4d;
+  border: 2px solid #6fd460;
+}
+
+.offering-desc {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  max-width: 392px;
+}
+
+.offering-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  color: var(--highlight, #6fd460);
+  text-decoration: none;
+  transition: gap 0.25s ease, opacity 0.2s ease;
+
+  &:hover { gap: 14px; opacity: 0.88; }
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 1400px) {
+  .offerings__main { column-gap: 32px; }
+  .offering-title { font-size: 24px; line-height: 32px; }
+  .offering-desc { font-size: 16px; line-height: 24px; }
+}
+
+@media (max-width: 1200px) {
+  .offerings__main {
+    grid-template-columns: 1fr 360px 1fr;
+    column-gap: 24px;
+    min-height: 620px;
+  }
+  .tree-stage { width: 360px; height: 620px; }
+  .tree-bg { /* svg scales via width/height */ }
+
+  /* Recalculate positions proportional to 360/442 = 0.8145 and 620/701 = 0.8845 */
+  .icon-slot { width: 96px; height: 96px; }
+  .icon-slot__img { width: 60px; height: 60px; }
+  .icon-slot--left { left: 0; }
+  .icon-slot--right { left: 264px; } /* 319 × 0.8283 ≈ 264 */
+  .icon-slot--top { top: 0; }
+  .icon-slot--mid { top: 208px; } /* 236 × 0.8814 */
+  .icon-slot--bot { top: 416px; } /* 472 × 0.8814 */
+
+  .text-col, .text-col--left, .text-col--right { min-height: 620px; }
+  .text-row--top { top: -14px; }
+  .text-row--mid { top: 194px; }
+  .text-row--bot { top: 402px; }
+}
+
+@media (max-width: 900px) {
+  /* Stack: each pair collapses to a mobile card list */
+  .offerings { padding: 60px 0 0; }
+  .offerings__main {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .tree-stage { display: none; }
+
+  .text-col, .text-col--left, .text-col--right {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .text-row {
+    position: static !important;
+    top: auto !important;
+    padding: 0 !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .offerings__title { font-size: 32px; line-height: 42px; }
+  .offering-title { font-size: 20px; line-height: 26px; }
+  .offering-desc { font-size: 14px; line-height: 20px; }
+  .ornament__line { width: 40px; }
+  .offerings__header { gap: 14px; margin-bottom: 32px; }
+}

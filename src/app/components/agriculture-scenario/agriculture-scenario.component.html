@@ -1,0 +1,49 @@
+<section class="scenario-section" aria-labelledby="scenario-heading">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title" id="scenario-heading">
+        <span class="star" aria-hidden="true">&#10022;</span>
+        Gujarat's <span class="primary">Agriculture</span> Scenario
+        <span class="star" aria-hidden="true">&#10022;</span>
+      </h2>
+    </div>
+
+    <div class="scenario-grid">
+      @for (card of cards; track card.title) {
+        <div
+          class="scenario-card"
+          tabindex="0"
+          [attr.aria-label]="card.title + ': ' + card.fullDesc"
+        >
+          <div class="scenario-card__inner">
+            <!-- FRONT: default state -->
+            <div class="scenario-card__face scenario-card__face--front">
+              <img
+                class="scenario-card__icon"
+                [src]="asset(card.iconDefault)"
+                [alt]="card.title + ' icon'"
+                loading="lazy"
+              />
+              <h3 class="scenario-card__title">{{ card.title }}</h3>
+              <p class="scenario-card__desc">{{ card.shortDesc }}</p>
+            </div>
+
+            <!-- BACK: hover state (dark green, white text, faded bg icon) -->
+            <div class="scenario-card__face scenario-card__face--back" aria-hidden="true">
+              <h3 class="scenario-card__title scenario-card__title--back">{{ card.title }}</h3>
+              <p class="scenario-card__desc scenario-card__desc--back">{{ card.fullDesc }}</p>
+              <img
+                class="scenario-card__bg-icon"
+                [src]="asset(card.iconHover)"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
+              <span class="scenario-card__accent" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

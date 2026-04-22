@@ -1,0 +1,105 @@
+<section class="hero" aria-label="Hero banner" aria-roledescription="carousel">
+  <!-- Slide text content -->
+  <div class="hero__content">
+    @for (slide of slides; track $index) {
+      <div
+        class="hero__slide-text"
+        [class.active]="activeSlide() === $index"
+        [attr.aria-hidden]="activeSlide() !== $index"
+      >
+        <h1 class="hero__heading">
+          <span>{{ slide.headingPart1 }}</span>
+          <span class="hero__highlight">{{ slide.headingPart2 }}</span>
+        </h1>
+        <p class="hero__subtext">{{ slide.subtext }}</p>
+      </div>
+    }
+  </div>
+
+  <!-- Image band with curved-notch top around buttons -->
+  <div class="hero__image-wrap">
+    <!-- Buttons float above image, bridging the notch -->
+    <div class="hero__actions">
+      <a href="#" class="hero-btn hero-btn--farmer">
+        <span>Explore Farmer Corner</span>
+        <span class="hero-btn__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a href="#" class="hero-btn hero-btn--officer">
+        <span>Explore Officer Corner</span>
+        <span class="hero-btn__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <!-- Notch clip-path definition (invisible; referenced by CSS) -->
+    <svg class="hero__clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <clipPath id="hero-notch" clipPathUnits="objectBoundingBox">
+          <path
+            d="M0.018,0
+               L0.368,0
+               Q0.383,0 0.389,0.038
+               L0.398,0.1
+               Q0.4,0.115 0.407,0.115
+               L0.593,0.115
+               Q0.6,0.115 0.602,0.1
+               L0.611,0.038
+               Q0.617,0 0.632,0
+               L0.982,0
+               Q1,0 1,0.046
+               L1,0.954
+               Q1,1 0.982,1
+               L0.018,1
+               Q0,1 0,0.954
+               L0,0.046
+               Q0,0 0.018,0 Z"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+
+    <!-- Image stack (fallback bg + one img per slide) -->
+    <div class="hero__image-stage">
+      <div class="hero__image-fallback"></div>
+      @for (slide of slides; track $index) {
+        <img
+          class="hero__bg-img"
+          [class.active]="activeSlide() === $index"
+          [src]="slide.image"
+          [alt]="slide.headingPart2"
+          draggable="false"
+        />
+      }
+    </div>
+
+    <!-- Prev/next arrows -->
+    <div class="hero__img-arrows" role="group" aria-label="Carousel navigation">
+      <button class="img-arrow" (click)="prevSlide()" aria-label="Previous slide">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="img-arrow" (click)="nextSlide()" aria-label="Next slide">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Dot indicators -->
+    <div class="hero__dots" role="tablist">
+      @for (slide of slides; track $index) {
+        <button
+          class="hero-dot"
+          [class.active]="activeSlide() === $index"
+          (click)="goToSlide($index)"
+          role="tab"
+          [attr.aria-selected]="activeSlide() === $index"
+          [attr.aria-label]="'Go to slide ' + ($index + 1)"
+        >
+          <span class="hero-dot__fill" [class.active]="activeSlide() === $index"></span>
+        </button>
+      }
+    </div>
+  </div>
+
+</section>
