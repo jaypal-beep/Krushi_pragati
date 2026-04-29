@@ -1,0 +1,262 @@
+<section class="info-page">
+
+  <!-- TAB BAR -->
+  <nav class="features-tabs" role="tablist" aria-label="Feature categories">
+    <div class="container">
+      <ul class="features-tabs__list">
+        @for (tab of tabs; track tab.key) {
+          <li class="features-tab" [class.is-active]="activeKey() === tab.key">
+            <button
+              type="button"
+              role="tab"
+              [attr.aria-selected]="activeKey() === tab.key"
+              (click)="setActive(tab.key)"
+              class="features-tab__btn"
+            >
+              <span class="features-tab__icon">
+                <img [src]="asset(tab.icon)" [alt]="tab.label" width="34" height="34" />
+              </span>
+              <span class="features-tab__label">{{ tab.label }}</span>
+            </button>
+          </li>
+        }
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="info-content">
+    <div class="container">
+      <div class="info-box">
+        <div class="info-wrapper">
+
+          <!-- ===== SECTION 1: CROP ACREAGE ESTIMATION ===== -->
+          <section class="info-section info-section--cards">
+
+            <div class="heading-row">
+              <div class="heading-ornament">
+                <span class="heading-ornament__line"></span>
+                <span class="heading-ornament__star">&#10022;</span>
+              </div>
+              <h2 class="info-section__heading">Crop Acreage Estimation</h2>
+              <div class="heading-ornament heading-ornament--right">
+                <span class="heading-ornament__star">&#10022;</span>
+                <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+              </div>
+            </div>
+
+            <p class="info-section__desc">
+              This report provides information on the total area of crops sown by farmers in Gujarat.
+              Published every 15 days during each season, it helps analyze which crops have been sown
+              and how sowing patterns have evolved. This data is crucial for agricultural planning and
+              policy formulation.
+            </p>
+
+            <div class="info-cards">
+              <div class="info-card">
+                <div class="info-card__image">
+                  <img [src]="cardImage('Cotton_Crop_Ahmedabad')" alt="Cotton Crop Ahmedabad" loading="lazy" />
+                </div>
+                <div class="info-card__caption">
+                  <span>Cotton Crop Ahmedabad</span>
+                </div>
+              </div>
+              <div class="info-card">
+                <div class="info-card__image">
+                  <img [src]="cardImage('Rise_Crop_Ahmedabad')" alt="Rise Crop Ahmedabad" loading="lazy" />
+                </div>
+                <div class="info-card__caption">
+                  <span>Rise Crop Ahmedabad</span>
+                </div>
+              </div>
+              <div class="info-card">
+                <div class="info-card__image">
+                  <img [src]="cardImage('Other_Crop_Ahmedabad')" alt="Other Crop Ahmedabad" loading="lazy" />
+                </div>
+                <div class="info-card__caption">
+                  <span>Other Crop Ahmedabad</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== SECTION 2: KEY OBJECTIVES ===== -->
+          <section class="info-section">
+
+            <div class="heading-row">
+              <div class="heading-ornament">
+                <span class="heading-ornament__line"></span>
+                <span class="heading-ornament__star">&#10022;</span>
+              </div>
+              <h2 class="info-section__heading">Key Objectives</h2>
+              <div class="heading-ornament heading-ornament--right">
+                <span class="heading-ornament__star">&#10022;</span>
+                <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+              </div>
+            </div>
+
+            <!-- Row 1 -->
+            <div class="info-two-col">
+              <div class="info-col">
+                <h3 class="info-col__title">Accurate Crop Area Estimation</h3>
+                <p class="info-col__desc">
+                  The total crop area cultivated in the fields is measured using remote sensing technology.
+                  This information is crucial for agricultural development, state government assistance
+                  programs, agricultural policy formulation, and resource allocation.
+                </p>
+              </div>
+              <div class="info-divider"></div>
+              <div class="info-col">
+                <h3 class="info-col__title">Key Insights</h3>
+                <ul class="info-bullets">
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>If a single crop is being cultivated in excess, steps will be taken to promote crop diversification.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Special planning will be undertaken to ensure the optimal use of arable land.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Monitoring changes in farming practices and sowing patterns will help develop strategies for irrigation and fertilizer management.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="info-two-col">
+              <div class="info-col">
+                <h3 class="info-col__title">Planting Pattern Monitoring</h3>
+                <p class="info-col__desc">
+                  Identify shifts in planting patterns, enabling timely adjustments in resource
+                  allocation and agronomic practices.
+                </p>
+              </div>
+              <div class="info-divider"></div>
+              <div class="info-col">
+                <h3 class="info-col__title">Crop Production and Management</h3>
+                <p class="info-col__desc">
+                  This report is data-driven, making it essential for strategic planning, enabling
+                  better crop production management and quick response during crises.
+                </p>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- ===== SECTION 3: PRIMARY BENEFICIARIES ===== -->
+          <section class="info-section info-beneficiaries">
+
+            <div class="heading-row">
+              <div class="heading-ornament">
+                <span class="heading-ornament__line"></span>
+                <span class="heading-ornament__star">&#10022;</span>
+              </div>
+              <h2 class="info-section__heading">Primary Beneficiaries</h2>
+              <div class="heading-ornament heading-ornament--right">
+                <span class="heading-ornament__star">&#10022;</span>
+                <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+              </div>
+            </div>
+
+            <div class="info-beneficiaries__row">
+              <div class="info-beneficiary">
+                <div class="info-beneficiary__icon">
+                  <img src="assets/images/Farmers_Default.svg" alt="Farmers" width="80" height="80" />
+                </div>
+                <h3 class="info-beneficiary__title">Farmers</h3>
+                <p class="info-beneficiary__desc">Can receive expert advice in advance to mitigate the risk of crop failure.</p>
+              </div>
+              <div class="info-beneficiary">
+                <div class="info-beneficiary__icon">
+                  <img src="assets/images/Crop_Acreage_Production_Monitoring_Default.svg" alt="Agriculture Department" width="80" height="80" />
+                </div>
+                <h3 class="info-beneficiary__title">Agriculture Department</h3>
+                <p class="info-beneficiary__desc">Can assess crop production potential and market demand.</p>
+              </div>
+              <div class="info-beneficiary">
+                <div class="info-beneficiary__icon">
+                  <img src="assets/images/State_Contribution_Default.svg" alt="State Government" width="80" height="80" />
+                </div>
+                <h3 class="info-beneficiary__title">State Government</h3>
+                <p class="info-beneficiary__desc">Can make data-driven decisions for agricultural support programs.</p>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- ===== SECTION 4: METHODS & TECHNOLOGY ===== -->
+          <section class="info-section">
+
+            <!-- Row 1 -->
+            <div class="info-two-col">
+              <div class="info-col">
+                <h3 class="info-col__title">Methods and Technology</h3>
+                <p class="info-col__desc">Crop area and sowing analysis are conducted using the following advanced technologies:</p>
+                <ul class="info-bullets">
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>High-Resolution Satellite Imagery – Observing and monitoring crop coverage.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Remote Sensing and GIS Technology – Analyzing sowing patterns and cropping trends.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Surveys – Collecting ground-level data with the assistance of farmers and officials to verify and validate reports.</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="info-divider"></div>
+              <div class="info-col">
+                <h3 class="info-col__title">Usage in Water Management and Irrigation Planning</h3>
+                <!-- First item is a plain paragraph per Figma structure -->
+                <p class="info-col__desc">Irrigation Management: This information ensures proper assessment of water requirements and timely availability of water.</p>
+                <ul class="info-bullets">
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Optimal Land Utilization: Enables effective pest control and fertilizer management tailored to soil and crop needs.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Pest Control and Crop Protection: Adopts a scientific, data-driven approach to managing crop diseases and invasive pests.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Surveys – Collecting ground-level data with the assistance of farmers and officials to verify and validate reports.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Row 2 (right col hidden per Figma — opacity 0) -->
+            <div class="info-two-col info-two-col--single">
+              <div class="info-col info-col--full">
+                <h3 class="info-col__title">State-Level Planning and Agricultural Development Utilization</h3>
+                <!-- Two plain paragraphs inside the heading frame per Figma structure -->
+                <p class="info-col__desc">This report serves as a strong tool for agricultural development at the state level.</p>
+                <p class="info-col__desc">The state government can formulate better policies for agricultural support and market management.</p>
+                <ul class="info-bullets">
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Resource Management: Effective planning for land, water, fertilizers, and seeds.</span>
+                  </li>
+                  <li class="info-bullet">
+                    <span class="info-bullet__star">&#10022;</span>
+                    <span>Risk Management: Identifying agricultural risks and developing immediate solutions.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </section>
+
+        </div><!-- /info-wrapper -->
+      </div><!-- /info-box -->
+    </div><!-- /container -->
+  </div><!-- /info-content -->
+
+</section>

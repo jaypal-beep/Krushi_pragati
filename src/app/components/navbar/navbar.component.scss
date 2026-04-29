@@ -224,12 +224,17 @@
   justify-content: flex-end;
   align-items: center;
   height: 50px;
+  position: relative;
 }
 
 .nav-list {
   display: flex;
   gap: 24px;
   align-items: center;
+}
+
+.nav-item {
+  position: relative;
 }
 
 .nav-link {
@@ -261,6 +266,122 @@
 
   &:hover { color: var(--primary-2); }
   &:hover::after { transform: scaleX(1); }
+}
+
+/* ============== Submenu dropdown ==============
+   Pixel-matched to Figma frame 57:7821 (About green):
+   - Panel: white, radius 8, padding 8, gap 8, shadow 0 12 40 rgba(29,80,22,.15) + 0 2 8 rgba(29,80,22,.08)
+   - 3 tabs × 149.33 × 98, bg #ecf8f2, radius 8, padding 8, gap 4 (vertical)
+   - Icon circle: 54×54, white bg, radius 100, inner icon 34×34
+   - Label: Anek Bangla Bold 16/24, color var(--primary)
+   - Hover tab: bg → --highlight
+================================================ */
+.submenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg, #ffffff);
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  z-index: 1050;
+  box-shadow:
+    0 2px 8px rgba(29, 80, 22, 0.08),
+    0 12px 40px rgba(29, 80, 22, 0.15);
+  animation: submenuFade 220ms ease-out;
+}
+
+@keyframes submenuFade {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Bridge so moving mouse from nav link to submenu doesn't trigger close */
+.submenu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
+.submenu__card {
+  width: 149.33px;
+  min-height: 98px;
+  padding: 8px;
+  background: var(--bg-section-alt, #ecf8f2);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--primary, #17412c);
+  transition: background 0.3s ease-out, transform 0.2s ease-out;
+
+  &:hover {
+    background: var(--highlight, #6fd460);
+    transform: translateY(-2px);
+
+    .submenu__label { color: var(--login-text, var(--primary, #17412c)); }
+  }
+}
+
+.submenu__icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 100px;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary, #17412c);
+
+  svg { display: block; }
+}
+
+.submenu__label {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: var(--primary, #17412c);
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+/* Dark theme overrides — matches Figma dark submenu (57:7833) */
+:host-context([data-theme='dark']) {
+  .submenu {
+    background: #1a1a1a;
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      0 12px 40px rgba(0, 0, 0, 0.6);
+  }
+  .submenu__card {
+    background: #333333;
+    color: #ffffff;
+
+    .submenu__label { color: #ffffff; }
+
+    &:hover {
+      background: #3a3a3a;
+      .submenu__label { color: var(--highlight, #6fd460); }
+    }
+  }
+  .submenu__icon {
+    background: #262626;
+    color: #ffffff;
+  }
+}
+
+/* Hide submenu on small screens (mobile nav takes over) */
+@media (max-width: 1024px) {
+  .submenu { display: none; }
 }
 
 /* ============== Mobile ============== */
@@ -339,6 +460,21 @@
 }
 
 @media (max-width: 480px) {
-  .login-pill { min-width: 72px; padding: 0 14px; font-size: 14px; }
-  .pill--theme { padding: 0 10px; gap: 8px; }
+  .header-inner { padding: 0 14px; column-gap: 10px; }
+  .header-right__top { gap: 8px; }
+  .logo-mascot { height: 46px; }
+  .mobile-toggle { padding: 6px; }
+  .login-pill { min-width: 64px; padding: 0 12px; font-size: 13px; height: 36px; }
+  .pill { height: 36px; }
+  .pill--theme { padding: 0 8px; gap: 8px; }
+  .theme-swatch { width: 18px; height: 18px; }
+}
+
+/* iPhone SE / 375px baseline — squeeze everything to fit the header row */
+@media (max-width: 380px) {
+  .header-inner { padding: 0 10px; }
+  .logo-mascot { height: 40px; }
+  .pill--theme { gap: 6px; padding: 0 6px; }
+  .theme-swatch { width: 16px; height: 16px; }
+  .login-pill { min-width: 56px; padding: 0 10px; font-size: 12px; }
 }

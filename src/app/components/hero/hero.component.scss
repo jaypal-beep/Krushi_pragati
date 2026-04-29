@@ -312,9 +312,50 @@
   .hero-dot { width: 24px; }
 }
 
+/* ≤560px: the carousel notch doesn't have room for two full-size buttons
+   cutting across the top of the image. Pull the actions out of the notch,
+   stack them below the image, and swap the notched clip-path for a plain
+   rounded rectangle so the image shows clean. */
+@media (max-width: 560px) {
+  .hero__image-wrap { aspect-ratio: 4 / 3; margin: 0 16px; }
+  .hero__image-stage {
+    -webkit-clip-path: none;
+    clip-path: none;
+    border-radius: 20px;
+  }
+  .hero__actions {
+    position: static;
+    transform: none;
+    top: auto;
+    left: auto;
+    margin: 20px auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 0 16px;
+    max-width: 340px;
+  }
+  .hero-btn { justify-content: center; height: 44px; font-size: 14px; }
+  .hero { padding-bottom: 48px; }
+}
+
 @media (max-width: 480px) {
   .hero__heading { font-size: 22px; }
-  .hero__actions { flex-direction: column; top: -16px; }
-  .hero-btn { height: 36px; font-size: 12px; }
-  .hero-btn__arrow { width: 14px; height: 14px; font-size: 12px; }
+  .hero__content { padding: 0 16px 32px; }
+  .hero-btn { height: 40px; font-size: 13px; }
+  .hero-btn__arrow { width: 16px; height: 16px; font-size: 14px; }
+  .hero__img-arrows { bottom: 12px; right: 10px; gap: 6px; }
+  .img-arrow { width: 32px; height: 32px; }
+  .hero__dots { bottom: 14px; gap: 6px; }
+  .hero-dot { width: 20px; height: 3px; }
+}
+
+/* 375px iPhone baseline */
+@media (max-width: 380px) {
+  .hero { padding: 32px 0 40px; }
+  .hero__heading { font-size: 20px; line-height: 1.25; }
+  .hero__subtext { font-size: 13px; line-height: 18px; }
+  .hero__image-wrap { margin: 0 10px; aspect-ratio: 4 / 3; }
+  .hero__actions { margin-top: 16px; padding: 0 10px; }
+  .hero-btn { height: 38px; font-size: 12px; padding: 0 12px; }
 }

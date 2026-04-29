@@ -1,0 +1,176 @@
+<section class="au-page">
+  <!-- ========== 1. BANNER (480px tall per Figma 59:10144) ========== -->
+  <div class="au-banner">
+    <img class="au-banner__img" [src]="asset('assets/images/About_Us_Page/Banner.png')" alt="" aria-hidden="true" />
+    <div class="au-banner__overlay"></div>
+    <h1 class="au-banner__title">About Krushi Pragati</h1>
+  </div>
+
+  <!-- ========== 2. INFORMATION (Component 26, 586px) ========== -->
+  <section class="au-info">
+    <div class="container">
+      <div class="heading-row">
+        <div class="heading-ornament heading-ornament--left" aria-hidden="true">
+          <span class="heading-ornament__line"></span>
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+        </div>
+        <h2 class="au-info__title">
+          Information About the <span class="au-info__title--accent">Directorate of Agriculture</span>, Government of Gujarat
+        </h2>
+        <div class="heading-ornament heading-ornament--right" aria-hidden="true">
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+          <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+        </div>
+      </div>
+
+      <!-- Two paragraphs per Figma (59:10157 + 59:10158) -->
+      <p class="au-info__desc">
+        The Directorate of Agriculture, Government of Gujarat, plays a crucial role in improving the
+        livelihoods of farmers and promoting sustainable agricultural practices across the state.
+        Through a combination of policy guidance, research, advisory services, and welfare
+        programmes, it enables Gujarat's farmers to adopt modern techniques and grow with confidence.
+      </p>
+      <p class="au-info__desc">
+        The Directorate of Agriculture serves as a key organization in the formulation and
+        implementation of Gujarat's agricultural policies. It supports farmers with timely
+        information, inputs, and infrastructure — bridging the latest research with the realities of
+        the field, and driving long-term productivity, profitability, and resilience.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== 3. FEATURE PANEL — iPhone + tractor + stats (Frame 74149) ========== -->
+  <section class="au-feature-section">
+    <div class="container">
+      <div class="au-feature">
+        <!-- SVG clip-path creating the notch in the image's bottom-right -->
+        <svg class="au-feature__clip-defs" width="0" height="0" aria-hidden="true" focusable="false">
+          <defs>
+            <clipPath id="au-feature-notch" clipPathUnits="objectBoundingBox">
+              <path d="
+                M 0 0
+                L 1 0
+                L 1 0.76
+                Q 1 0.76 0.975 0.76
+                L 0.555 0.76
+                Q 0.53 0.76 0.53 0.80
+                L 0.53 1
+                L 0 1
+                Z
+              "/>
+            </clipPath>
+          </defs>
+        </svg>
+
+        <div class="au-feature__hero">
+          <img class="au-feature__img" [src]="asset('assets/images/About_Us_Page/CTA.png')" alt="Krushi Pragati app and farm" />
+        </div>
+        <div class="au-feature__stats">
+          @for (stat of stats; track stat.label) {
+            <div class="au-stat">
+              <div class="au-stat__value">{{ stat.value }}</div>
+              <div class="au-stat__label">{{ stat.label }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 4. KEY RESPONSIBILITIES (Frame 24, 2 rows) ========== -->
+  <section class="au-resp">
+    <div class="container">
+      <!-- ROW 1: 2 text blocks (LEFT) | farmer image (RIGHT) -->
+      <div class="au-resp-row row g-4">
+        <div class="col-12 col-lg-6 au-resp__text-col">
+          @for (item of respRow1; track item.title) {
+            <div class="au-resp-block">
+              <h3 class="au-resp-block__title">
+                {{ item.title }}<span class="au-resp-block__title--accent">{{ item.titleAccent }}</span>
+              </h3>
+              <p class="au-resp-block__desc">{{ item.description }}</p>
+            </div>
+          }
+        </div>
+        <div class="col-12 col-lg-6 au-resp__image-col">
+          <div class="au-resp__photo">
+            <img [src]="asset('assets/images/About_Us_Page/Key_Responsibilities.png')" alt="Farmers in tea field" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 2: aerial field image (LEFT) | 3 text blocks (RIGHT) -->
+      <div class="au-resp-row row g-4">
+        <div class="col-12 col-lg-6 au-resp__image-col">
+          <div class="au-resp__photo">
+            <img [src]="asset('assets/images/About_Us_Page/Water_Management_Irrigation.png')" alt="Aerial view of irrigation field" />
+          </div>
+        </div>
+        <div class="col-12 col-lg-6 au-resp__text-col">
+          @for (item of respRow2; track item.title) {
+            <div class="au-resp-block">
+              <h3 class="au-resp-block__title">
+                {{ item.title }}<span class="au-resp-block__title--accent">{{ item.titleAccent }}</span>
+              </h3>
+              <p class="au-resp-block__desc">{{ item.description }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 5. COLLABORATION (Component 27) ========== -->
+  <section class="au-collab">
+    <div class="container">
+      <div class="heading-row">
+        <div class="heading-ornament heading-ornament--left" aria-hidden="true">
+          <span class="heading-ornament__line"></span>
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+        </div>
+        <h2 class="au-collab__title">
+          <span class="au-collab__title--accent">Collaboration</span> and Capacity Building
+        </h2>
+        <div class="heading-ornament heading-ornament--right" aria-hidden="true">
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+          <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+        </div>
+      </div>
+
+      <p class="au-collab__desc">
+        The Directorate works in coordination with research institutions, agricultural universities,
+        and other government departments to develop sustainable solutions for farmers. Continuous
+        knowledge exchange and capacity-building programs empower farmers, extension staff, and
+        young innovators to adopt modern, climate-resilient practices.
+      </p>
+      <p class="au-collab__desc">
+        In addition to developing policies and offering support schemes, the Directorate ensures the
+        availability of modern machinery, crop protection measures, and high-quality inputs — driving
+        collective, long-term growth across Gujarat's agricultural sector.
+      </p>
+
+      <div class="au-collab__actions">
+        <a href="#" class="au-btn au-btn--primary">
+          <span>Explore Farmer Corner</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <a href="#" class="au-btn au-btn--primary">
+          <span>Explore Officer Corner</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M4 10h12m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</section>

@@ -1,15 +1,28 @@
 <section class="scenario-section" aria-labelledby="scenario-heading">
   <div class="container">
     <div class="section-header">
-      <h2 class="section-title" id="scenario-heading">
-        <span class="star" aria-hidden="true">&#10022;</span>
-        Gujarat's <span class="primary">Agriculture</span> Scenario
-        <span class="star" aria-hidden="true">&#10022;</span>
-      </h2>
+      <div class="heading-row">
+        <div class="heading-ornament heading-ornament--left" aria-hidden="true">
+          <span class="heading-ornament__line"></span>
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+        </div>
+        <h2 class="section-title" id="scenario-heading" style="gap: 16px;">
+          Gujarat's <span class="primary">Agriculture</span> Scenario
+        </h2>
+        <div class="heading-ornament heading-ornament--right" aria-hidden="true">
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+          <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+        </div>
+      </div>
     </div>
 
-    <div class="scenario-grid">
+    <div class="scenario-grid row g-4">
       @for (card of cards; track card.title) {
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
         <div
           class="scenario-card"
           tabindex="0"
@@ -42,6 +55,7 @@
               <span class="scenario-card__accent" aria-hidden="true"></span>
             </div>
           </div>
+        </div>
         </div>
       }
     </div>

@@ -30,18 +30,11 @@
   line-height: 66px;
   font-weight: 500;
   color: var(--primary, #17412c);
-  margin: 0 0 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
+  margin: 0;
 }
 
 .insights__title-base { color: var(--primary, #17412c); font-weight: 500; }
 .insights__title-accent { color: var(--highlight, #6fd460); font-weight: 700; }
-
-.insights__star { flex-shrink: 0; }
 
 .insights__subtitle {
   font-family: 'Anek Bangla', sans-serif;
@@ -70,11 +63,7 @@
   letter-spacing: 0.2px;
 }
 
-.insights__grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 30px;
-}
+/* Grid layout handled by Bootstrap .row.g-4 + responsive .col-* in template */
 
 /* -------- Icon card --------
    Default: white bg, 15px radius, invisible border placeholder.
@@ -158,15 +147,10 @@
   }
 }
 
-/* -------- Responsive -------- */
+/* -------- Responsive card styling -------- */
 @media (max-width: 1400px) {
-  .insights__grid { gap: 20px; }
   .icon-card { padding: 22px 14px; }
   .icon-card__label { font-size: 18px; line-height: 24px; }
-}
-
-@media (max-width: 1100px) {
-  .insights__grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -176,8 +160,4 @@
   .insights__subtitle { font-size: 15px; line-height: 22px; }
   .insights__block-label { font-size: 20px; line-height: 26px; }
   .icon-card__icon { width: 52px; height: 52px; }
-}
-
-@media (max-width: 560px) {
-  .insights__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
 }

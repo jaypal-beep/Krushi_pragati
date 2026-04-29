@@ -1,0 +1,826 @@
+<section class="fc-page">
+
+  <!-- ==================== TAB BAR ==================== -->
+  <nav class="features-tabs" role="tablist" aria-label="Farmer Corner sections">
+    <ul class="features-tabs__list">
+      @for (tab of tabs; track tab.key) {
+        <li class="features-tab" [class.is-active]="activeKey() === tab.key">
+          <button
+            type="button"
+            role="tab"
+            [attr.aria-selected]="activeKey() === tab.key"
+            (click)="setActive(tab.key)"
+            class="features-tab__btn"
+          >
+            <span class="features-tab__icon">
+              <img [src]="asset(tab.icon)" [alt]="tab.label" width="34" height="34" />
+            </span>
+            <span class="features-tab__label">{{ tab.label }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <div class="fc-content">
+    <div class="fc-box">
+
+      <!-- ===== FILTER SECTION ===== -->
+      <div class="fc-filter">
+
+        <!-- Row 1: label + chips + toggle -->
+        <div class="fc-filter__top">
+          <div class="fc-filter__label-row">
+            <span class="fc-filter__label">Filter</span>
+            <div class="fc-filter__chips">
+              @for (chip of filterChips; track chip) {
+                <span class="fc-filter__chip">
+                  <span class="fc-filter__chip-text">{{ chip }}</span>
+                  <button type="button" class="fc-filter__chip-close" aria-label="Remove filter">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                </span>
+              }
+            </div>
+          </div>
+          <!-- Hide / Show Filter toggle — amber bg with border -->
+          <button type="button" class="fc-filter__toggle" (click)="toggleFilter()">
+            <span>{{ showFilter() ? 'Hide Filter' : 'Show Filter' }}</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+              <path
+                [attr.d]="showFilter() ? 'M1 5l4-4 4 4' : 'M1 1l4 4 4-4'"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Row 2: floating-label dropdowns (collapsible) -->
+        @if (showFilter()) {
+          <div class="fc-filter__controls">
+
+            <!-- ── Select Year ── -->
+            <div class="fc-select" [class.is-open]="openDropdown() === 'year'" (click)="$event.stopPropagation()">
+              <label class="fc-select__label">Select Year</label>
+              <button type="button" class="fc-select__field" (click)="toggleDropdown('year')">
+                {{ selectedYear() }}
+              </button>
+              <span class="fc-select__icon" aria-hidden="true">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1l4 4 4-4" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              @if (openDropdown() === 'year') {
+                <div class="fc-dropdown">
+                  <div class="fc-dropdown__search">
+                    <div class="fc-dropdown__search-wrap">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="7" cy="7" r="5.5" stroke="#808080" stroke-width="1.5"/>
+                        <path d="M11 11l3 3" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      <input type="text" placeholder="Search..." autocomplete="off"
+                             [value]="searchQuery()"
+                             (input)="searchQuery.set($any($event.target).value)" />
+                    </div>
+                  </div>
+                  <ul class="fc-dropdown__list">
+                    @for (opt of filteredOptions(yearOptions); track opt) {
+                      <li class="fc-dropdown__item" [class.is-selected]="selectedYear() === opt"
+                          (click)="selectOption('year', opt)">
+                        <span class="fc-dropdown__bar"></span>
+                        <span class="fc-dropdown__text">{{ opt }}</span>
+                        @if (selectedYear() === opt) {
+                          <svg class="fc-dropdown__check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+
+            <!-- ── Select Season ── -->
+            <div class="fc-select" [class.is-open]="openDropdown() === 'season'" (click)="$event.stopPropagation()">
+              <label class="fc-select__label">Select Season</label>
+              <button type="button" class="fc-select__field" (click)="toggleDropdown('season')">
+                {{ selectedSeason() }}
+              </button>
+              <span class="fc-select__icon" aria-hidden="true">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1l4 4 4-4" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              @if (openDropdown() === 'season') {
+                <div class="fc-dropdown">
+                  <div class="fc-dropdown__search">
+                    <div class="fc-dropdown__search-wrap">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="7" cy="7" r="5.5" stroke="#808080" stroke-width="1.5"/>
+                        <path d="M11 11l3 3" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      <input type="text" placeholder="Search..." autocomplete="off"
+                             [value]="searchQuery()"
+                             (input)="searchQuery.set($any($event.target).value)" />
+                    </div>
+                  </div>
+                  <ul class="fc-dropdown__list">
+                    @for (opt of filteredOptions(seasonOptions); track opt) {
+                      <li class="fc-dropdown__item" [class.is-selected]="selectedSeason() === opt"
+                          (click)="selectOption('season', opt)">
+                        <span class="fc-dropdown__bar"></span>
+                        <span class="fc-dropdown__text">{{ opt }}</span>
+                        @if (selectedSeason() === opt) {
+                          <svg class="fc-dropdown__check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+
+            <!-- ── Select Date (custom calendar picker) ── -->
+            <div class="fc-select" [class.is-open]="openDropdown() === 'date'" (click)="$event.stopPropagation()">
+              <label class="fc-select__label">Select Date</label>
+              <button type="button" class="fc-select__field fc-select__field--date" (click)="toggleCalendar()">
+                {{ formattedDate() }}
+              </button>
+              <span class="fc-select__icon fc-select__icon--calendar" aria-hidden="true">
+                <svg width="16" height="17" viewBox="0 0 16 17" fill="none">
+                  <rect x="1" y="3" width="14" height="13" rx="2" stroke="#808080" stroke-width="1.5"/>
+                  <path d="M1 7h14" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M5 1v4M11 1v4" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              @if (openDropdown() === 'date') {
+                <div class="fc-calendar">
+                  <!-- Header: prev / month+year / next -->
+                  <div class="fc-calendar__header">
+                    <button type="button" class="fc-calendar__nav" (click)="prevCalMonth()">
+                      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                        <path d="M6 1L1 6l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                    <div class="fc-calendar__month-year">
+                      <span class="fc-calendar__month">
+                        {{ calendarMonthName() }}
+                        <svg width="8" height="5" viewBox="0 0 8 5" fill="none">
+                          <path d="M1 1l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                      <span class="fc-calendar__year">
+                        {{ calendarViewYear() }}
+                        <svg width="8" height="5" viewBox="0 0 8 5" fill="none">
+                          <path d="M1 1l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </span>
+                    </div>
+                    <button type="button" class="fc-calendar__nav" (click)="nextCalMonth()">
+                      <svg width="7" height="12" viewBox="0 0 7 12" fill="none">
+                        <path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <!-- Weekday labels + date grid (single unit, 4px internal gap) -->
+                  <div class="fc-calendar__dates-wrap">
+                    <div class="fc-calendar__weekdays">
+                      @for (wd of weekdays; track wd) {
+                        <span>{{ wd }}</span>
+                      }
+                    </div>
+                    <div class="fc-calendar__grid">
+                      @for (day of calendarDays(); track day.date.getTime()) {
+                        <button
+                          type="button"
+                          class="fc-calendar__day"
+                          [class.is-other-month]="!day.isCurrentMonth"
+                          [class.is-today]="day.isToday && !day.isSelected"
+                          [class.is-selected]="day.isSelected"
+                          (click)="selectCalDate(day)">
+                          {{ day.day }}
+                        </button>
+                      }
+                    </div>
+                  </div>
+                  <!-- Footer -->
+                  <div class="fc-calendar__footer">
+                    <button type="button" class="fc-calendar__today-btn" (click)="goToToday()">Today</button>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- ── Select District ── -->
+            <div class="fc-select" [class.is-open]="openDropdown() === 'district'" (click)="$event.stopPropagation()">
+              <label class="fc-select__label">Select District</label>
+              <button type="button" class="fc-select__field" (click)="toggleDropdown('district')">
+                {{ selectedDistrict() }}
+              </button>
+              <span class="fc-select__icon" aria-hidden="true">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1l4 4 4-4" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              @if (openDropdown() === 'district') {
+                <div class="fc-dropdown">
+                  <div class="fc-dropdown__search">
+                    <div class="fc-dropdown__search-wrap">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="7" cy="7" r="5.5" stroke="#808080" stroke-width="1.5"/>
+                        <path d="M11 11l3 3" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      <input type="text" placeholder="Search..." autocomplete="off"
+                             [value]="searchQuery()"
+                             (input)="searchQuery.set($any($event.target).value)" />
+                    </div>
+                  </div>
+                  <ul class="fc-dropdown__list">
+                    @for (opt of filteredOptions(districtOptions); track opt) {
+                      <li class="fc-dropdown__item" [class.is-selected]="selectedDistrict() === opt"
+                          (click)="selectOption('district', opt)">
+                        <span class="fc-dropdown__bar"></span>
+                        <span class="fc-dropdown__text">{{ opt }}</span>
+                        @if (selectedDistrict() === opt) {
+                          <svg class="fc-dropdown__check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+
+            <!-- ── Select Taluk ── -->
+            <div class="fc-select" [class.is-open]="openDropdown() === 'taluk'" (click)="$event.stopPropagation()">
+              <label class="fc-select__label">Select Taluk</label>
+              <button type="button" class="fc-select__field" (click)="toggleDropdown('taluk')">
+                {{ selectedTaluk() }}
+              </button>
+              <span class="fc-select__icon" aria-hidden="true">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                  <path d="M1 1l4 4 4-4" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              @if (openDropdown() === 'taluk') {
+                <div class="fc-dropdown">
+                  <div class="fc-dropdown__search">
+                    <div class="fc-dropdown__search-wrap">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="7" cy="7" r="5.5" stroke="#808080" stroke-width="1.5"/>
+                        <path d="M11 11l3 3" stroke="#808080" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                      <input type="text" placeholder="Search..." autocomplete="off"
+                             [value]="searchQuery()"
+                             (input)="searchQuery.set($any($event.target).value)" />
+                    </div>
+                  </div>
+                  <ul class="fc-dropdown__list">
+                    @for (opt of filteredOptions(talukOptions); track opt) {
+                      <li class="fc-dropdown__item" [class.is-selected]="selectedTaluk() === opt"
+                          (click)="selectOption('taluk', opt)">
+                        <span class="fc-dropdown__bar"></span>
+                        <span class="fc-dropdown__text">{{ opt }}</span>
+                        @if (selectedTaluk() === opt) {
+                          <svg class="fc-dropdown__check" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        }
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+
+            <button type="button" class="fc-btn fc-btn--apply">Apply</button>
+            <button type="button" class="fc-btn fc-btn--clear">Clear</button>
+
+          </div>
+        }
+
+      </div><!-- /fc-filter -->
+
+      <!-- ===== CONTENT PANEL ===== -->
+      <div class="fc-panel">
+
+        <!-- Section heading row (gray stripe bg + title) -->
+        <div class="fc-panel__heading-row">
+          <div class="fc-panel__heading">
+            <div class="heading-ornament">
+              <span class="heading-ornament__line"></span>
+              <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+            </div>
+            <h2 class="fc-panel__title">{{ activeTab().label }}</h2>
+            <div class="heading-ornament heading-ornament--right">
+              <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+              <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel content area -->
+        <div class="fc-panel__body">
+
+          <!-- ===== WEATHER PATTERN ADVISORY ===== -->
+          @if (activeKey() === 'weather-advisory') {
+
+            <!-- === TICKER / MARQUEE === -->
+            <div class="fc-ticker" role="marquee" aria-live="off">
+              <div class="fc-ticker__track">
+                @for (msg of tickerMessages; track msg) {
+                  <span class="fc-ticker__star">&#10022;</span>
+                  <span class="fc-ticker__text">{{ msg }}</span>
+                }
+                <!-- Duplicate for seamless loop -->
+                @for (msg of tickerMessages; track msg) {
+                  <span class="fc-ticker__star">&#10022;</span>
+                  <span class="fc-ticker__text">{{ msg }}</span>
+                }
+              </div>
+            </div>
+
+            <!-- === WEATHER FORECAST === -->
+            <div class="fc-forecast">
+
+              <!-- Sub-heading -->
+              <div class="fc-forecast__heading">
+                <div class="heading-ornament">
+                  <span class="heading-ornament__line"></span>
+                  <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                </div>
+                <h3 class="fc-forecast__title">Weather Forecast</h3>
+                <div class="heading-ornament heading-ornament--right">
+                  <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                  <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+                </div>
+              </div>
+
+              <!-- 5 forecast cards -->
+              <div class="fc-forecast__cards">
+                @for (day of forecastDays; track day.date) {
+                  <div class="fc-forecast-card">
+                    <div class="fc-forecast-card__header">{{ day.date }}</div>
+                    <div class="fc-forecast-card__body">
+                      <div class="fc-forecast-card__row">
+                        <span class="fc-forecast-card__metric">
+                          <img class="fc-row-icon" src="assets/images/Rainfall_Icon.svg" width="24" height="24" alt="" aria-hidden="true" />
+                          Rainfall
+                        </span>
+                        <span class="fc-forecast-card__value">{{ day.rainfall }}</span>
+                      </div>
+                      <div class="fc-forecast-card__row">
+                        <span class="fc-forecast-card__metric">
+                          <img class="fc-row-icon" src="assets/images/MaxTemp_Icon.svg" width="24" height="24" alt="" aria-hidden="true" />
+                          Max Temp
+                        </span>
+                        <span class="fc-forecast-card__value">{{ day.maxTemp }}</span>
+                      </div>
+                      <div class="fc-forecast-card__row">
+                        <span class="fc-forecast-card__metric">
+                          <img class="fc-row-icon" src="assets/images/MinTemp_Icon.svg" width="24" height="24" alt="" aria-hidden="true" />
+                          Min Temp
+                        </span>
+                        <span class="fc-forecast-card__value">{{ day.minTemp }}</span>
+                      </div>
+                      <div class="fc-forecast-card__row">
+                        <span class="fc-forecast-card__metric">
+                          <img class="fc-row-icon" src="assets/images/Humidity_Icon.svg" width="24" height="24" alt="" aria-hidden="true" />
+                          Humidity
+                        </span>
+                        <span class="fc-forecast-card__value">{{ day.humidity }}</span>
+                      </div>
+                      <div class="fc-forecast-card__row">
+                        <span class="fc-forecast-card__metric">
+                          <img class="fc-row-icon" src="assets/images/WindSpeed_Icon.svg" width="24" height="24" alt="" aria-hidden="true" />
+                          Wind Speed
+                        </span>
+                        <span class="fc-forecast-card__value">{{ day.windSpeed }}</span>
+                      </div>
+                      <div class="fc-forecast-card__row">
+                        <span class="fc-forecast-card__metric">
+                          <img class="fc-row-icon" src="assets/images/CloudPosition_Icon.svg" width="24" height="24" alt="" aria-hidden="true" />
+                          Cloud Position
+                        </span>
+                        <span class="fc-forecast-card__value">{{ day.cloudPosition }}</span>
+                      </div>
+                    </div><!-- /body -->
+                  </div><!-- /fc-forecast-card -->
+                }
+              </div><!-- /fc-forecast__cards -->
+
+            </div><!-- /fc-forecast -->
+
+            <!-- === SUMMARY PANELS === -->
+            <div class="fc-summary">
+
+              <!-- Weather Summary (yellow panel) -->
+              <div class="fc-summary__panel fc-summary__panel--weather">
+                <div class="fc-summary__heading">
+                  <div class="heading-ornament">
+                    <span class="heading-ornament__line"></span>
+                    <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                  </div>
+                  <h3 class="fc-summary__title">{{ weatherSummaryTitle }}</h3>
+                  <div class="heading-ornament heading-ornament--right">
+                    <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                    <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+                  </div>
+                </div>
+                <ul class="fc-summary__bullets">
+                  @for (bullet of weatherSummaryBullets; track bullet) {
+                    <li class="fc-summary__bullet">
+                      <span class="fc-summary__bullet-star">&#10022;</span>
+                      <span>{{ bullet }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+
+              <!-- Agricultural Advice (green panel) -->
+              <div class="fc-summary__panel fc-summary__panel--advice">
+                <div class="fc-summary__heading">
+                  <div class="heading-ornament">
+                    <span class="heading-ornament__line"></span>
+                    <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                  </div>
+                  <h3 class="fc-summary__title">{{ agriAdviceTitle }}</h3>
+                  <div class="heading-ornament heading-ornament--right">
+                    <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                    <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+                  </div>
+                </div>
+                <ul class="fc-summary__bullets">
+                  @for (bullet of agriAdviceBullets; track bullet) {
+                    <li class="fc-summary__bullet">
+                      <span class="fc-summary__bullet-star">&#10022;</span>
+                      <span>{{ bullet }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+
+            </div><!-- /fc-summary -->
+
+          }<!-- /weather-advisory -->
+
+          <!-- ===== CROP ADVISORY ===== -->
+          @if (activeKey() === 'crop-advisory') {
+            <div class="ca-content">
+
+              <!-- Advisory description -->
+              <p class="ca-desc">{{ cropAdvisoryDesc }}</p>
+
+              <!-- Crop cards row -->
+              <div class="ca-cards">
+                @for (card of cropCards; track card.id) {
+                  <div class="ca-card">
+
+                    <!-- White top section: image + badge (Figma Frame 84: fill=#FFFFFF) -->
+                    <div class="ca-card__top">
+
+                      <!-- Crop image (Frame 74091: 382×220, no fill) -->
+                      <div class="ca-card__img-wrap">
+                        <img [src]="asset(card.image)" [alt]="card.name" class="ca-card__img" />
+                      </div>
+
+                      <!-- Crop stage badge (Frame 74087: full-width, no fill, padding 0 16px)
+                           Badge inner (Frame 74085: 350×38, fill=#DAF1E5) -->
+                      <div class="ca-card__badge">
+                        <span class="ca-card__badge-label">{{ cropStageLabelGu }}</span>
+                        <span class="ca-card__badge-value">{{ card.cropStage }}</span>
+                      </div>
+
+                    </div><!-- /ca-card__top -->
+
+                    <!-- Gray body section: text + button (Frame 74090: no fill → #f2f2f2 shows through) -->
+                    <div class="ca-card__body">
+                      <div class="ca-card__info">
+                        <h4 class="ca-card__name">{{ card.name }}</h4>
+                        <p class="ca-card__desc">{{ card.description }}</p>
+                      </div>
+                      <!-- Button: text + right white-circle arrow (Figma Component 32) -->
+                      <button type="button" class="ca-card__btn" (click)="openPopup(card)">
+                        <span class="ca-card__btn-text">{{ cropAdvisoryBtnText }}</span>
+                        <span class="ca-card__btn-arrow" aria-hidden="true">
+                          <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+                            <path d="M0 4h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M9.5 1L13 4l-3.5 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+
+                  </div><!-- /ca-card -->
+                }
+              </div><!-- /ca-cards -->
+
+            </div><!-- /ca-content -->
+          }<!-- /crop-advisory -->
+
+          <!-- ===== PEST & DISEASE INFESTATION ===== -->
+          @if (activeKey() === 'pest-disease') {
+            <div class="pd-content">
+
+              <!-- Advisory description -->
+              <p class="pd-desc">{{ pestDiseaseDesc }}</p>
+
+              <!-- Pest & Disease cards row -->
+              <div class="pd-cards">
+                @for (card of pestCards; track card.id) {
+                  <div class="pd-card">
+
+                    <!-- White top section: image + badge -->
+                    <div class="pd-card__top">
+                      <div class="pd-card__img-wrap">
+                        <img [src]="asset(card.image)" [alt]="card.name" class="pd-card__img" />
+                      </div>
+                      <!-- Pest type badge -->
+                      <div class="pd-card__badge">
+                        <span class="pd-card__badge-label">{{ pestLabelGu }}</span>
+                        <span class="pd-card__badge-value">{{ card.pestType }}</span>
+                      </div>
+                    </div><!-- /pd-card__top -->
+
+                    <!-- Body: crop name + description + button -->
+                    <div class="pd-card__body">
+                      <div class="pd-card__info">
+                        <h4 class="pd-card__name">{{ card.name }}</h4>
+                        <p class="pd-card__desc">{{ card.description }}</p>
+                      </div>
+                      <button type="button" class="pd-card__btn" (click)="openPestPopup(card)">
+                        <span class="pd-card__btn-text">{{ pestBtnText }}</span>
+                        <span class="pd-card__btn-arrow" aria-hidden="true">
+                          <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+                            <path d="M0 4h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M9.5 1L13 4l-3.5 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+
+                  </div><!-- /pd-card -->
+                }
+              </div><!-- /pd-cards -->
+
+            </div><!-- /pd-content -->
+          }<!-- /pest-disease -->
+
+          <!-- ===== SOIL MOISTURE STATUS ===== -->
+          @if (activeKey() === 'soil-moisture') {
+            <div class="status-content">
+
+              <p class="status-desc">{{ soilMoistureDesc }}</p>
+
+              <div class="status-row">
+
+                <!-- Left info card -->
+                <div class="status-card">
+                  <div class="status-card__info-row">
+                    <div class="status-card__locations">
+                      <div class="status-card__location">
+                        <span class="status-card__label">District</span>
+                        <span class="status-card__value">{{ selectedDistrict() }}</span>
+                      </div>
+                      <div class="status-card__location">
+                        <span class="status-card__label">Taluk</span>
+                        <span class="status-card__value">{{ selectedTaluk() }}</span>
+                      </div>
+                    </div>
+                    <span class="status-card__badge">{{ soilMoistureBadge }}</span>
+                  </div>
+                  <div class="status-card__img-wrap">
+                    <img [src]="asset('assets/images/soil_moisture_plant.png')" alt="Soil moisture status" class="status-card__img" />
+                  </div>
+                </div>
+
+                <!-- Right summary panel -->
+                <div class="status-panel">
+                  <div class="status-panel__heading">
+                    <div class="heading-ornament">
+                      <span class="heading-ornament__line"></span>
+                      <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                    </div>
+                    <h3 class="status-panel__title">{{ soilMoisturePanelTitle }}</h3>
+                    <div class="heading-ornament heading-ornament--right">
+                      <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                      <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+                    </div>
+                  </div>
+
+                  <!-- 2-column bullets grid (interleaved L/R order) -->
+                  <div class="status-panel__grid">
+                    @for (bullet of soilMoistureBullets; track $index) {
+                      <div class="status-panel__bullet">
+                        <svg class="status-panel__bullet-star" width="14" height="14" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+                        </svg>
+                        <span class="status-panel__bullet-text">{{ bullet }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+              </div><!-- /status-row -->
+            </div><!-- /status-content -->
+          }<!-- /soil-moisture -->
+
+          <!-- ===== CROP STRESS STATUS ===== -->
+          @if (activeKey() === 'crop-stress') {
+            <div class="status-content">
+
+              <p class="status-desc">{{ cropStressDesc }}</p>
+
+              <div class="status-row">
+
+                <!-- Left info card -->
+                <div class="status-card">
+                  <div class="status-card__info-row">
+                    <div class="status-card__locations">
+                      <div class="status-card__location">
+                        <span class="status-card__label">District</span>
+                        <span class="status-card__value">{{ selectedDistrict() }}</span>
+                      </div>
+                      <div class="status-card__location">
+                        <span class="status-card__label">Taluk</span>
+                        <span class="status-card__value">{{ selectedTaluk() }}</span>
+                      </div>
+                    </div>
+                    <span class="status-card__badge">{{ cropStressBadge }}</span>
+                  </div>
+                  <div class="status-card__img-wrap">
+                    <img [src]="asset('assets/images/crop_stress_plant.png')" alt="Crop stress status" class="status-card__img" />
+                  </div>
+                </div>
+
+                <!-- Right summary panel -->
+                <div class="status-panel">
+                  <div class="status-panel__heading">
+                    <div class="heading-ornament">
+                      <span class="heading-ornament__line"></span>
+                      <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                    </div>
+                    <h3 class="status-panel__title">{{ cropStressPanelTitle }}</h3>
+                    <div class="heading-ornament heading-ornament--right">
+                      <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true"><path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/></svg>
+                      <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+                    </div>
+                  </div>
+
+                  <!-- 2×2 stat boxes -->
+                  <div class="status-panel__stats">
+                    @for (stat of cropStressStats; track stat.label) {
+                      <div class="status-panel__stat">
+                        <span class="status-panel__stat-value">{{ stat.value }}</span>
+                        <span class="status-panel__stat-label">{{ stat.label }}</span>
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Satellite advisory text -->
+                  <p class="status-panel__satellite">{{ cropStressSatelliteText }}</p>
+
+                  <!-- 2-column bullets grid -->
+                  <div class="status-panel__grid">
+                    @for (bullet of cropStressBullets; track $index) {
+                      <div class="status-panel__bullet">
+                        <svg class="status-panel__bullet-star" width="14" height="14" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+                        </svg>
+                        <span class="status-panel__bullet-text">{{ bullet }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+              </div><!-- /status-row -->
+            </div><!-- /status-content -->
+          }<!-- /crop-stress -->
+
+        </div><!-- /fc-panel__body -->
+      </div><!-- /fc-panel -->
+
+    </div><!-- /fc-box -->
+  </div><!-- /fc-content -->
+
+
+  <!-- ==================== CROP ADVISORY POPUP ==================== -->
+  @if (activePopupCard(); as card) {
+    <div class="ca-popup-overlay" (click)="closePopup()" role="presentation">
+
+      <!-- Wrapper owns position:relative so close button sits OUTSIDE the scrollable popup -->
+      <div class="ca-popup-wrapper" (click)="$event.stopPropagation()">
+
+        <!-- Close button: Figma Frame 36 — 44×44, radius 100, fill #ecf8f2
+             Icon: plus-path rotated -45° → forms X, stroke #17412c weight 2
+             Positioned top:-14px right:-14px (extends outside popup boundary) -->
+        <button type="button" class="ca-popup__close" (click)="closePopup()" aria-label="Close advisory">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 0V16M0 8H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" transform="rotate(-45 8 8)"/>
+          </svg>
+        </button>
+
+        <!-- Popup box: scrollable vertically, no horizontal scroll -->
+        <div
+          class="ca-popup"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-label]="card.name + ' Advisory'"
+        >
+          <!-- Title row: left ornament + "કૃષિ સલાહ" + right ornament -->
+          <div class="ca-popup__title-row">
+            <div class="heading-ornament">
+              <span class="heading-ornament__line"></span>
+              <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+              </svg>
+            </div>
+            <h3 class="ca-popup__title">{{ cropAdvisoryBtnText }}</h3>
+            <div class="heading-ornament heading-ornament--right">
+              <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+              </svg>
+              <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+            </div>
+          </div>
+
+          <!-- Advisory list: 6 items, each with 4-pointed star + text -->
+          <ul class="ca-popup__list">
+            @for (item of card.advisoryItems; track $index) {
+              <li class="ca-popup__item">
+                <svg class="ca-popup__item-star" width="16" height="16" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                  <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+                </svg>
+                <span class="ca-popup__item-text">{{ item }}</span>
+              </li>
+            }
+          </ul>
+
+        </div><!-- /ca-popup -->
+      </div><!-- /ca-popup-wrapper -->
+    </div><!-- /ca-popup-overlay -->
+  }
+
+  <!-- ==================== PEST & DISEASE POPUP ==================== -->
+  @if (activePestPopupCard(); as card) {
+    <div class="pd-popup-overlay" (click)="closePestPopup()" role="presentation">
+
+      <div class="pd-popup-wrapper" (click)="$event.stopPropagation()">
+
+        <!-- Close button — same design as CA popup (Frame 36: 44×44, fill #ecf8f2) -->
+        <button type="button" class="pd-popup__close" (click)="closePestPopup()" aria-label="Close pest advisory">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 0V16M0 8H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" transform="rotate(-45 8 8)"/>
+          </svg>
+        </button>
+
+        <!-- Popup box: Figma 750×350, title + advisory items list -->
+        <div
+          class="pd-popup"
+          role="dialog"
+          aria-modal="true"
+          [attr.aria-label]="card.name + ' Pest & Disease Control'"
+        >
+          <!-- Title row: ornament + "રોગ/જીવાત નિયંત્રણ" + ornament -->
+          <div class="pd-popup__title-row">
+            <div class="heading-ornament">
+              <span class="heading-ornament__line"></span>
+              <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+              </svg>
+            </div>
+            <h3 class="pd-popup__title">{{ pestBtnText }}</h3>
+            <div class="heading-ornament heading-ornament--right">
+              <svg class="heading-ornament__star" width="24" height="24" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+              </svg>
+              <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+            </div>
+          </div>
+
+          <!-- Advisory list: each item has diamond star + text -->
+          <ul class="pd-popup__list">
+            @for (item of card.advisoryItems; track $index) {
+              <li class="pd-popup__item">
+                <svg class="pd-popup__item-star" width="16" height="16" viewBox="0 0 34 34" fill="currentColor" aria-hidden="true">
+                  <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z"/>
+                </svg>
+                <span class="pd-popup__item-text">{{ item }}</span>
+              </li>
+            }
+          </ul>
+
+        </div><!-- /pd-popup -->
+      </div><!-- /pd-popup-wrapper -->
+    </div><!-- /pd-popup-overlay -->
+  }
+
+</section>

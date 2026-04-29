@@ -1,0 +1,282 @@
+/* ============================================================
+   Features page — pixel-matched to Figma frame 64:14728
+     1. Tab bar  1920×84   (6 feature tabs, dark-green bg, ~264×54 per tab)
+     2. Content  (heading + desc + 4 cards in responsive grid)
+   Theme-adaptive via existing CSS vars.
+============================================================ */
+
+.features-page {
+  font-family: 'Anek Bangla', sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-section-alt);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* ==================== 1. TAB BAR ====================
+   Figma 64:14843 — 1920×84 dark-green gradient bar, padding 130/130/15/15,
+   itemSpacing 15 between tabs.
+   Each tab (Figma instance 64:15698..64:15703) is a 264.17×54 rounded
+   rectangle (cornerRadius 12), HORIZONTAL layout padding 4/12/4/4,
+   itemSpacing 8 between white-disc icon and 2-line label.
+     - Active tab fill: SOLID #6FD460 (--highlight)
+     - Inactive tab fill: white @ opacity 0.10
+================================================================ */
+.features-tabs {
+  position: sticky;
+  top: 110px;         /* navbar height is always 110px */
+  z-index: 990;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-2, var(--primary)) 100%);
+  padding: 15px 130px;                   /* Figma tab-row padding */
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 15px;                            /* Figma itemSpacing */
+  }
+}
+
+.features-tab {
+  flex: 1 1 0;
+
+  &__btn {
+    width: 100%;
+    height: 54px;
+    padding: 4px 12px 4px 4px;            /* Figma padding L/R/T/B */
+    background: rgba(255, 255, 255, 0.10); /* inactive: Figma white @ 0.10 */
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;                             /* Figma itemSpacing inside tab */
+    border-radius: 12px;                  /* Figma cornerRadius 12 */
+    transition: background 0.25s ease;
+    text-align: left;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;               /* Figma cornerRadius 12 — not a circle */
+    background: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+
+    img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  }
+
+  &__label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    color: #ffffff;
+    white-space: pre-line;
+    flex: 1 1 auto;
+  }
+
+  &.is-active .features-tab__btn {
+    background: var(--highlight);         /* Figma #6FD460 solid */
+
+    .features-tab__label { color: var(--primary); font-weight: 700; }
+
+    &:hover { background: var(--highlight); }
+  }
+}
+
+/* ==================== 2. CONTENT ==================== */
+.features-content {
+  padding: 40px 0 52px;   /* 40px mint gap above container, 52px mint gap below */
+
+  .container {
+    background: #ffffff;
+    border-radius: 30px;
+    padding-top: 40px;     /* Frame 94 paddingTop — internal top space inside white box */
+    padding-bottom: 30px;  /* Frame 74149 paddingBottom — internal bottom space */
+  }
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 52px;
+    color: var(--primary);
+    margin: 0;
+    text-align: left;
+
+    &--accent {
+      color: var(--highlight);
+      font-weight: 700;
+    }
+  }
+
+  &__desc {
+    margin: 18px 0 40px;   /* 18=Figma title→desc gap, 40=Frame94 paddingBottom */
+    text-align: left;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    color: var(--primary);
+  }
+}
+
+/* ==================== CARDS ==================== */
+.features-grid {
+  --bs-gutter-x: 30px;
+  --bs-gutter-y: 30px;
+}
+
+.feature-card {
+  background: #f2f2f2;
+  border-radius: 30px;
+  border: none;
+  padding: 8px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(23, 65, 44, 0.15);
+  }
+
+  &__media {
+    width: 100%;
+    aspect-ratio: 497 / 350;
+    background: #ffffff;
+    border-radius: 22px;        /* 30 card radius − 8 card padding */
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 56%;                  /* 280 / 497 ≈ 56 % — matches Figma GIF size */
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    padding: 30px 22px 22px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 36px;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  &__desc {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
+    color: var(--text-secondary);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.02em;
+    color: var(--highlight);
+    text-decoration: none;
+    transition: gap 0.2s ease;
+
+    &:hover { gap: 14px; }
+  }
+}
+
+/* Dark theme override */
+:host-context([data-theme='dark']) {
+  .features-tabs {
+    background: linear-gradient(180deg, #0d0d0d 0%, #404040 100%);
+  }
+
+  .features-tab {
+    &__icon { background: #0d0d0d; }
+
+    &.is-active .features-tab__btn {
+      .features-tab__label { color: #0f280b; }
+    }
+  }
+
+  .features-content {
+    .container {
+      background: #1a1a1a;   /* Figma Frame74149 dark bg r:0.10 */
+    }
+
+    &__title { color: #ffffff; }
+    &__desc  { color: #ffffff; }
+  }
+
+  .feature-card {
+    background: #0d0d0d;   /* Figma card bg r:0.05 */
+
+    &__media { background: #1a1a1a; }   /* Figma image frame bg r:0.10 */
+    &__title { color: #ffffff; }
+    &__desc  { color: #ffffff; }
+  }
+}
+
+.features-placeholder {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 18px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1200px) {
+  .features-tab__label { font-size: 12px; line-height: 14px; }
+  .features-content__title { font-size: 36px; line-height: 44px; }
+}
+
+@media (max-width: 991px) {
+  .features-tabs__list { flex-wrap: wrap; justify-content: flex-start; }
+  .features-tab { flex: 1 1 calc(50% - 4px); }
+  .features-content { padding: 40px 0 24px; }
+}
+
+@media (max-width: 768px) {
+  .features-tab { flex: 1 1 100%; }
+  .features-tab__btn { height: auto; padding: 10px 14px; }
+  .features-content__title { font-size: 26px; line-height: 34px; }
+  .features-content__desc { font-size: 15px; line-height: 22px; margin-bottom: 28px; }
+  .feature-card__title { font-size: 20px; line-height: 28px; }
+  .feature-card__desc { font-size: 14px; line-height: 22px; }
+  .feature-card__body { padding: 20px 16px 16px; }
+}

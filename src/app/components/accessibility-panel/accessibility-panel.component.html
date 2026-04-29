@@ -1,0 +1,162 @@
+<!-- Backdrop -->
+<div
+  class="a11y-backdrop"
+  [class.is-open]="isOpen()"
+  (click)="close()"
+  aria-hidden="true"
+></div>
+
+<!-- Slide-in panel from right -->
+<aside
+  class="a11y-panel"
+  [class.is-open]="isOpen()"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="a11y-panel-title"
+  [attr.aria-hidden]="!isOpen()"
+>
+  <!-- SVG symbol sprite (reused by cards) -->
+  <svg class="a11y-sprite" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <symbol id="icon-speaker" viewBox="0 0 24 24">
+        <path d="M4 10v4h3l4 3V7L7 10H4z" fill="currentColor" />
+        <path d="M15.5 9a4 4 0 010 6M18 6a8 8 0 010 12"
+              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </symbol>
+      <symbol id="icon-bigger" viewBox="0 0 24 24">
+        <text x="4" y="17" font-family="Anek Bangla, sans-serif" font-size="15" font-weight="700" fill="currentColor">T</text>
+        <text x="13" y="13" font-family="Anek Bangla, sans-serif" font-size="10" font-weight="700" fill="currentColor">T</text>
+        <path d="M18 5v4M16 7h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </symbol>
+      <symbol id="icon-smaller" viewBox="0 0 24 24">
+        <text x="3" y="17" font-family="Anek Bangla, sans-serif" font-size="15" font-weight="700" fill="currentColor">T</text>
+        <text x="13" y="13" font-family="Anek Bangla, sans-serif" font-size="9" font-weight="700" fill="currentColor">T</text>
+      </symbol>
+      <symbol id="icon-lines" viewBox="0 0 24 24">
+        <path d="M5 7h14M5 12h14M5 17h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <symbol id="icon-link" viewBox="0 0 24 24">
+        <path d="M9 15l6-6M10 6l1-1a4 4 0 015.657 5.657l-1 1M14 18l-1 1a4 4 0 01-5.657-5.657l1-1"
+              fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="icon-spacing" viewBox="0 0 24 24">
+        <path d="M4 12h16M7 9L4 12l3 3M17 9l3 3-3 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        <path d="M8 6h8M8 18h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </symbol>
+      <symbol id="icon-df" viewBox="0 0 24 24">
+        <text x="2" y="17" font-family="Anek Bangla, sans-serif" font-size="13" font-weight="700" fill="currentColor" letter-spacing="0.5">DF</text>
+      </symbol>
+      <symbol id="icon-hideimg" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <circle cx="9" cy="11" r="1.6" fill="currentColor" />
+        <path d="M20 17l-4-5-3 4-2-2-4 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+        <path d="M4 20L20 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <symbol id="icon-cursor" viewBox="0 0 24 24">
+        <path d="M5 4l12 6-5 2-2 5-5-13z" fill="currentColor" />
+        <path d="M16 16l5 5M19 15l2 2M15 19l2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </symbol>
+      <symbol id="icon-moon" viewBox="0 0 24 24">
+        <path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z" fill="currentColor" />
+      </symbol>
+      <symbol id="icon-invert" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="M12 3a9 9 0 010 18V3z" fill="currentColor" />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Header -->
+  <header class="a11y-panel__header">
+    <h2 class="a11y-panel__title" id="a11y-panel-title">Accessibility options</h2>
+    <button class="a11y-panel__close" type="button" (click)="close()" aria-label="Close accessibility options">
+      <svg width="24" height="24" aria-hidden="true"><use href="#icon-close" /></svg>
+    </button>
+  </header>
+
+  <!-- Body -->
+  <div class="a11y-panel__body">
+    <button class="a11y-reset" type="button" (click)="reset()">Reset All Settings</button>
+
+    <div class="a11y-grid">
+      @for (card of settings; track $index) {
+        <div
+          class="a11y-card"
+          [class.is-active]="isCardActive(card)"
+          [class.is-placeholder]="card.placeholder"
+          [attr.aria-hidden]="card.placeholder ? true : null"
+        >
+          @if (!card.placeholder) {
+            <button
+              class="a11y-card__top"
+              type="button"
+              (click)="onCardClick(card)"
+              [attr.aria-pressed]="card.control === 'toggle' ? isToggleActive(card.key) : null"
+              [attr.aria-label]="card.label"
+            >
+              <span class="a11y-card__icon">
+                <svg width="24" height="24" aria-hidden="true"><use [attr.href]="'#' + card.icon" /></svg>
+              </span>
+              <span class="a11y-card__label">{{ card.label }}</span>
+            </button>
+
+            <div class="a11y-card__bottom">
+              @if (card.control === 'slider') {
+                <button
+                  class="a11y-slider__btn"
+                  type="button"
+                  (click)="onSliderStep($any(card.key), -1)"
+                  aria-label="Decrease"
+                >−</button>
+
+                <div class="a11y-slider__track" role="presentation">
+                  @for (step of [0,1,2,3]; track step) {
+                    <span
+                      class="a11y-slider__tick"
+                      [class.is-filled]="sliderValue($any(card.key)) > step"
+                    ></span>
+                  }
+                </div>
+
+                <button
+                  class="a11y-checkbox"
+                  type="button"
+                  (click)="onSliderStep($any(card.key), 1)"
+                  [class.is-checked]="isCardActive(card)"
+                  [attr.aria-pressed]="isCardActive(card)"
+                  [attr.aria-label]="card.label + ' increase'"
+                >
+                  @if (isCardActive(card)) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  }
+                </button>
+              } @else {
+                <!-- Toggle card: checkbox sits LEFT when inactive, shifts RIGHT when active -->
+                <button
+                  class="a11y-checkbox a11y-checkbox--toggle"
+                  type="button"
+                  (click)="onToggle(card.key)"
+                  [class.is-checked]="isToggleActive(card.key)"
+                  [class.a11y-checkbox--right]="isToggleActive(card.key)"
+                  [attr.aria-pressed]="isToggleActive(card.key)"
+                  [attr.aria-label]="card.label + ' toggle'"
+                >
+                  @if (isToggleActive(card.key)) {
+                    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M5 12l5 5 9-10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  }
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,368 @@
+/* ============================================================
+   Accessibility Panel — slide-in from right
+   Pixel-matched to Figma frames 51:6748 / 6954 / 7160 / 7366
+   Width 452px, rounded top-left/bottom-left 24px, drop-shadow
+   Header 72px (themed bg) + scrollable body
+   3-col card grid, cards 129.33×146, 16px gap, radius 16px
+============================================================ */
+
+:host {
+  display: contents;
+}
+
+.a11y-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ---------- Backdrop ---------- */
+.a11y-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1090;
+
+  &.is-open { opacity: 1; visibility: visible; }
+}
+
+/* ---------- Panel shell ---------- */
+.a11y-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 452px;
+  max-width: 100vw;
+  height: 100vh;
+  background: var(--bg-section-alt, #ecf8f2);
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  box-shadow: 0 0 25px rgba(50, 30, 1, 0.2);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1100;
+  font-family: 'Anek Bangla', sans-serif;
+
+  &.is-open { transform: translateX(0); }
+}
+
+/* ---------- Header ---------- */
+.a11y-panel__header {
+  flex-shrink: 0;
+  height: 72px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--highlight, #6fd460);
+  color: var(--primary, #17412c);
+  border-top-left-radius: 24px;
+}
+
+.a11y-panel__title {
+  margin: 0;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 34px;
+  color: inherit;
+}
+
+.a11y-panel__close {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 100px;
+  background: rgba(23, 65, 44, 0.1);
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    background: rgba(23, 65, 44, 0.2);
+    transform: scale(1.05);
+  }
+}
+
+/* ---------- Body ---------- */
+.a11y-panel__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.a11y-reset {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  color: #0f2e0b; /* Figma exact */
+  cursor: pointer;
+  text-align: right;
+  transition: opacity 0.2s ease;
+
+  &:hover { opacity: 0.7; text-decoration: underline; }
+}
+
+/* ---------- Grid ---------- */
+.a11y-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ---------- Card ---------- */
+.a11y-card {
+  position: relative;
+  background: var(--card-bg, #ffffff);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Figma itemSpacing between top-area and bottom-strip */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover:not(.is-placeholder) {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  &.is-active {
+    border-color: var(--highlight, #6fd460);
+  }
+
+  &.is-placeholder {
+    background: transparent;
+    border-color: transparent;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+.a11y-card__top {
+  flex: 0 0 auto;
+  height: 86px; /* Figma Frame 149 = 90 minus 2×2px card border = 86 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 12px 12px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--primary, #17412c);
+  font-family: 'Anek Bangla', sans-serif;
+}
+
+.a11y-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--primary, #17412c);
+
+  svg { width: 100%; height: 100%; }
+}
+
+.a11y-card__label {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+  color: var(--primary, #17412c);
+}
+
+/* ---------- Bottom control strip ---------- */
+.a11y-card__bottom {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  height: 48px;
+  border-top: 1px solid #e6e6e6;
+}
+
+.a11y-card__spacer { flex: 1 1 auto; }
+
+/* ---------- Checkbox ---------- */
+.a11y-checkbox {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid #c6ccc9;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &.is-checked {
+    background: var(--highlight, #6fd460);
+    border-color: var(--highlight, #6fd460);
+  }
+
+  svg { width: 14px; height: 14px; }
+}
+
+/* Toggle card's single checkbox: LEFT by default, shifts RIGHT when active */
+.a11y-checkbox--toggle {
+  margin-right: auto;
+}
+.a11y-checkbox--toggle.a11y-checkbox--right {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* ---------- Slider ---------- */
+.a11y-slider__btn {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  color: var(--primary, #17412c);
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.15s ease, transform 0.15s ease;
+
+  &:hover { transform: scale(1.15); }
+
+  svg { display: block; }
+}
+
+.a11y-slider__track {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  height: 24px;
+  padding: 0 2px;
+}
+
+.a11y-slider__tick {
+  flex: 1 1 0;
+  height: 2px;
+  background: #c6ccc9;
+  border-radius: 2px;
+  transition: background 0.2s ease;
+
+  &.is-filled { background: var(--primary, #17412c); }
+}
+
+.a11y-card.is-active .a11y-slider__btn:last-child {
+  color: var(--highlight, #6fd460);
+}
+
+/* ============================================================
+   THEME OVERRIDES — per-theme header colors + text
+============================================================ */
+
+/* BLUE */
+:host-context([data-theme='blue']) {
+  .a11y-panel { background: var(--bg-section-alt); }
+  .a11y-panel__header {
+    background: var(--login-bg, #1a6bb2);
+    color: #ffffff;
+  }
+  .a11y-panel__close { background: rgba(255, 255, 255, 0.18); }
+  .a11y-panel__close:hover { background: rgba(255, 255, 255, 0.28); }
+}
+
+/* ORANGE / SAFFRON */
+:host-context([data-theme='orange']) {
+  .a11y-panel { background: var(--bg-section-alt); }
+  .a11y-panel__header {
+    background: var(--login-bg, #f3813f);
+    color: #ffffff;
+  }
+  .a11y-panel__close { background: rgba(255, 255, 255, 0.2); }
+  .a11y-panel__close:hover { background: rgba(255, 255, 255, 0.3); }
+}
+
+/* DARK */
+:host-context([data-theme='dark']) {
+  .a11y-panel {
+    background: var(--bg-page, #0d0d0d);
+  }
+  .a11y-panel__header {
+    background: #1a1a1a;
+    color: #ffffff;
+  }
+  .a11y-panel__close {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+  .a11y-panel__close:hover { background: rgba(255, 255, 255, 0.2); }
+
+  .a11y-reset { color: #ffffff; }
+
+  .a11y-card {
+    background: var(--card-bg, #1a1a1a);
+  }
+  .a11y-card__top { color: #ffffff; }
+  .a11y-card__icon,
+  .a11y-card__label { color: #ffffff; }
+
+  .a11y-card__bottom { border-top-color: #333333; }
+
+  .a11y-checkbox {
+    border-color: #4a4a4a;
+    background: transparent;
+  }
+  .a11y-checkbox.is-checked {
+    background: var(--highlight, #6fd460);
+    border-color: var(--highlight, #6fd460);
+    color: #17412c;
+  }
+
+  .a11y-slider__btn { color: #ffffff; }
+  .a11y-slider__tick { background: #4a4a4a; }
+  .a11y-slider__tick.is-filled { background: #ffffff; }
+}
+
+/* ============================================================
+   RESPONSIVE — panel fills screen on small devices
+============================================================ */
+@media (max-width: 520px) {
+  .a11y-panel {
+    width: 100vw;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .a11y-panel__header { border-top-left-radius: 0; }
+}

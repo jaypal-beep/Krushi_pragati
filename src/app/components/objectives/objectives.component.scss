@@ -214,4 +214,10 @@
   .nav-btn { width: 40px; height: 40px; padding: 10px; }
   .objective-card { flex: 0 0 260px; width: 260px; min-height: 360px; padding: 18px; }
   .objective-card__image-wrap { height: 140px; }
+  .objectives__track { gap: 18px; }
+}
+
+@media (max-width: 400px) {
+  .objective-card { flex: 0 0 230px; width: 230px; min-height: 340px; padding: 16px; }
+  .objective-card__image-wrap { height: 120px; }
 }

@@ -1,0 +1,416 @@
+/* ============================================================
+   About Us — pixel-aligned to Figma frame 59:10143 (1920 × 4407)
+     1. Banner             Component 25   1920 × 480
+     2. Information        Component 26   1920 × 586  (heading + 2 paragraphs)
+     3. Feature panel      Frame 74149    1920 × 719  (image hero + 3 stats)
+     4. Key Responsibilities Frame 24     1920 × 1310 (2 rows, 550 each, alternating)
+     5. Collaboration      Component 27   1920 × 570  (heading + 2 paragraphs + 2 CTAs)
+   All 4 themes adapt via existing CSS vars.
+============================================================ */
+
+.au-page {
+  font-family: 'Anek Bangla', sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-section-alt); /* Figma root fill #ECF8F2 */
+}
+
+/* ======================= 1. BANNER (480 tall) ======================= */
+.au-banner {
+  position: relative;
+  width: 100%;
+  height: 480px;
+  overflow: hidden;
+  isolation: isolate;
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(23, 65, 44, 0.30) 0%, rgba(23, 65, 44, 0.65) 100%);
+  }
+
+  &__title {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 54px;
+    font-weight: 700;
+    line-height: 66px;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    padding: 0 24px;
+  }
+}
+
+/* ======================= 2. INFORMATION ======================= */
+.au-info {
+  padding: 80px 0 40px;
+  background: transparent; /* inherits page bg #ECF8F2 */
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 56px;
+    color: var(--primary);
+    margin: 0;
+    max-width: 1200px;
+    text-align: center;
+
+    &--accent {
+      color: var(--highlight);
+      font-weight: 700;
+    }
+  }
+
+  &__desc {
+    max-width: 1660px;
+    margin: 24px auto 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 30px;
+    color: var(--text-secondary);
+
+    & + .au-info__desc { margin-top: 16px; }
+  }
+}
+
+/* ======================= 3. FEATURE PANEL =======================
+   Card = mint bg with a clipped image that has a curved notch in its
+   bottom-right corner. Stats sit in the notched area on mint background.
+================================================================ */
+.au-feature-section {
+  padding: 24px 0 48px;
+  background: transparent;
+}
+
+.au-feature {
+  position: relative;
+  border-radius: 40px;
+  overflow: hidden;
+  background: var(--bg-section-alt); /* mint card bg — visible through notch */
+  aspect-ratio: 1660 / 639;          /* Figma card proportions */
+}
+
+.au-feature__clip-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.au-feature__hero {
+  position: absolute;
+  inset: 0;
+  line-height: 0;
+}
+
+.au-feature__img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  clip-path: url(#au-feature-notch);
+  -webkit-clip-path: url(#au-feature-notch);
+}
+
+/* Stats overlay — positioned in the notched cutout (bottom-right of card).
+   Figma Frame 1166: 779×150 at card-local x=881, y=489 (flush to bottom-right).
+   Cutout in clip-path is 47% × 24% of card. */
+.au-feature__stats {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 47%;
+  height: 24%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;             /* Figma itemSpacing */
+  padding: 0 44px 0 0;   /* tiny right breathing room */
+  background: transparent;
+}
+
+.au-stat {
+  width: 239.67px;
+  min-height: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+
+  &__value {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--highlight);
+  }
+
+  &__label {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: var(--primary);
+  }
+}
+
+/* ======================= 4. KEY RESPONSIBILITIES =======================
+   Dark-green section with 2×2 grid.
+   Row 1: text-card (2 blocks) LEFT | farmer image RIGHT
+   Row 2: aerial field image LEFT | text-card (3 blocks) RIGHT
+   Text "cards" are subtle glass panels with rounded corners that match
+   the image cards (radius ~20-24px). Blocks stack vertically inside.
+======================================================================= */
+.au-resp {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 80px 0;
+
+  .au-resp-row {
+    align-items: stretch;
+
+    & + .au-resp-row { margin-top: 32px; }
+  }
+
+  &__text-col,
+  &__image-col {
+    display: flex;
+  }
+
+  /* Glass panel wrapping the text blocks */
+  &__text-col {
+    & > .au-resp-block:first-child,
+    & > .au-resp-block-group { margin: 0; }
+  }
+
+  &__photo {
+    border-radius: 30px;          /* Figma Frame 64 cornerRadius 30 */
+    overflow: hidden;
+    width: 100%;
+    min-height: 540px;            /* Figma row height 550 */
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+/* Glass text card — Figma Frame 74150/74151:
+   815×550, fills white @ opacity 0.10, cornerRadius 30, padding 30 all,
+   itemSpacing 30 between child blocks. */
+.au-resp__text-col {
+  flex-direction: column;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 30px;
+  min-height: 540px;
+}
+
+.au-resp-block {
+  padding: 0;
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 30px;
+    margin: 0 0 10px;
+    color: #ffffff;
+
+    &--accent {
+      color: var(--highlight);
+      font-weight: 700;
+    }
+  }
+
+  &__desc {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+  }
+}
+
+/* Dark theme override */
+:host-context([data-theme='dark']) .au-resp {
+  background: #0d0d0d;
+  color: #ffffff;
+
+  .au-resp__text-col {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .au-resp-block__title { color: #ffffff; }
+  .au-resp-block__title--accent { color: var(--highlight); }
+  .au-resp-block__desc { color: rgba(255, 255, 255, 0.82); }
+}
+
+/* ======================= 5. COLLABORATION ======================= */
+.au-collab {
+  padding: 72px 0 88px;
+  background: transparent; /* inherits page bg #ECF8F2 */
+  text-align: center;
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 56px;
+    color: var(--primary);
+    margin: 0;
+
+    &--accent {
+      color: var(--highlight);
+      font-weight: 700;
+    }
+  }
+
+  &__desc {
+    max-width: 1660px;
+    margin: 22px auto 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 30px;
+    color: var(--text-secondary);
+
+    & + .au-collab__desc { margin-top: 14px; }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+}
+
+.au-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 28px;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.25s ease;
+
+  &--primary {
+    background: var(--highlight);
+    color: var(--login-text, var(--primary));
+
+    &:hover {
+      filter: brightness(0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+    }
+  }
+}
+
+/* ======================= RESPONSIVE ======================= */
+@media (max-width: 1400px) {
+  .au-info__title,
+  .au-collab__title { font-size: 34px; line-height: 46px; }
+}
+
+@media (max-width: 1200px) {
+  .au-banner { height: 380px; }
+  .au-banner__title { font-size: 44px; line-height: 54px; }
+  .au-info__title,
+  .au-collab__title { font-size: 30px; line-height: 40px; }
+  .au-stat__value { font-size: 36px; }
+  .au-resp__title { font-size: 32px; line-height: 42px; }
+}
+
+@media (max-width: 991px) {
+  .au-resp__photo { min-height: 280px; border-radius: 24px; }
+  .au-resp__text-col { padding: 24px; gap: 24px; min-height: 0; border-radius: 24px; }
+}
+
+@media (max-width: 1400px) {
+  .au-feature__stats { padding-right: 32px; gap: 24px; }
+  .au-stat { width: 200px; }
+  .au-stat__value { font-size: 36px; }
+}
+
+@media (max-width: 1200px) {
+  .au-feature__stats { padding-right: 20px; gap: 18px; }
+  .au-stat { width: 170px; }
+  .au-stat__value { font-size: 30px; }
+  .au-stat__label { font-size: 14px; line-height: 18px; }
+}
+
+@media (max-width: 900px) {
+  /* Drop clip-path notch — stats stack below image on mint strip */
+  .au-feature { aspect-ratio: auto; }
+  .au-feature__hero { position: relative; inset: auto; }
+  .au-feature__img {
+    clip-path: none;
+    -webkit-clip-path: none;
+    height: auto;
+  }
+  .au-feature__stats {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    justify-content: space-around;
+    padding: 24px 16px;
+    background: var(--bg-section-alt);
+  }
+  .au-stat { width: auto; flex: 1 1 0; align-items: center; text-align: center; }
+}
+
+@media (max-width: 768px) {
+  .au-banner { height: 280px; }
+  .au-banner__title { font-size: 30px; line-height: 40px; }
+  .au-info { padding: 56px 0 24px; }
+  .au-info__title,
+  .au-collab__title { font-size: 22px; line-height: 32px; }
+  .au-info__desc,
+  .au-collab__desc { font-size: 15px; line-height: 24px; }
+  .au-feature { border-radius: 24px; }
+  .au-feature__stats {
+    justify-content: space-around;
+    padding: 18px 12px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .au-stat { align-items: center; text-align: center; flex: 1 1 30%; min-width: 90px; padding: 4px; }
+  .au-stat__value { font-size: 26px; }
+  .au-stat__label { font-size: 12px; line-height: 16px; }
+  .au-resp { padding: 56px 0; }
+  .au-resp-block__title { font-size: 20px; line-height: 28px; }
+  .au-resp-block__desc { font-size: 13px; line-height: 20px; }
+  .au-collab { padding: 56px 0 64px; }
+  .au-btn { padding: 11px 20px; font-size: 14px; }
+}

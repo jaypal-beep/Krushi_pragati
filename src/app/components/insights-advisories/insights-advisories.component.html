@@ -1,15 +1,23 @@
 <section class="insights" aria-labelledby="insights-heading">
   <div class="container">
     <div class="insights__header">
-      <h2 class="insights__title" id="insights-heading">
-        <svg class="insights__star" width="34" height="34" viewBox="0 0 34 34" fill="#f5b741" aria-hidden="true">
-          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
-        </svg>
-        <span class="insights__title-base">Annual </span><span class="insights__title-accent">Insights &amp; Advisories</span>
-        <svg class="insights__star" width="34" height="34" viewBox="0 0 34 34" fill="#f5b741" aria-hidden="true">
-          <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
-        </svg>
-      </h2>
+      <div class="heading-row">
+        <div class="heading-ornament heading-ornament--left" aria-hidden="true">
+          <span class="heading-ornament__line"></span>
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+        </div>
+        <h2 class="insights__title" id="insights-heading">
+          <span class="insights__title-base">Annual </span><span class="insights__title-accent">Insights &amp; Advisories</span>
+        </h2>
+        <div class="heading-ornament heading-ornament--right" aria-hidden="true">
+          <svg class="heading-ornament__star" width="34" height="34" viewBox="0 0 34 34" fill="currentColor">
+            <path d="M17 0 L20.5 13.5 L34 17 L20.5 20.5 L17 34 L13.5 20.5 L0 17 L13.5 13.5 Z" />
+          </svg>
+          <span class="heading-ornament__line heading-ornament__line--reverse"></span>
+        </div>
+      </div>
       <p class="insights__subtitle">
         The Agriculture Monitoring System provides support to farmers, officials and stake holders,
         driving informed decisions for improved productivity and sustainability in Gujarat's farming
@@ -19,11 +27,13 @@
 
     <div class="insights__block">
       <h3 class="insights__block-label">Insights</h3>
-      <div class="insights__grid">
+      <div class="insights__grid row g-4">
         @for (item of insights; track item.label) {
-          <div class="icon-card icon-card--insight">
-            <img class="icon-card__icon" [src]="asset(item.icon)" [alt]="item.label + ' icon'" loading="lazy" />
-            <span class="icon-card__label">{{ item.label }}</span>
+          <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="icon-card icon-card--insight">
+              <img class="icon-card__icon" [src]="asset(item.icon)" [alt]="item.label + ' icon'" loading="lazy" />
+              <span class="icon-card__label">{{ item.label }}</span>
+            </div>
           </div>
         }
       </div>
@@ -31,11 +41,13 @@
 
     <div class="insights__block">
       <h3 class="insights__block-label">Advisories</h3>
-      <div class="insights__grid">
+      <div class="insights__grid row g-4">
         @for (item of advisories; track item.label) {
-          <div class="icon-card icon-card--advisory">
-            <img class="icon-card__icon" [src]="asset(item.icon)" [alt]="item.label + ' icon'" loading="lazy" />
-            <span class="icon-card__label">{{ item.label }}</span>
+          <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+            <div class="icon-card icon-card--advisory">
+              <img class="icon-card__icon" [src]="asset(item.icon)" [alt]="item.label + ' icon'" loading="lazy" />
+              <span class="icon-card__label">{{ item.label }}</span>
+            </div>
           </div>
         }
       </div>

@@ -40,30 +40,33 @@
     <!-- Quick Links -->
     <div class="footer-links">
       <h4 class="footer-links__heading">Quick Links</h4>
-      <div class="footer-links__grid footer-links__grid--four">
+      <div class="footer-links__grid row g-4">
         @for (col of quickLinks; track $index) {
-          <ul class="footer-links__col">
-            @for (link of col; track link.label) {
-              <li><a [href]="link.href">{{ link.label }}</a></li>
-            }
-          </ul>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <ul class="footer-links__col">
+              @for (link of col; track link.label) {
+                <li><a [href]="link.href">{{ link.label }}</a></li>
+              }
+            </ul>
+          </div>
         }
       </div>
     </div>
 
-    <!-- Other Links — same 4-column grid as Quick Links, 4th column empty
-         so items align vertically with Quick Links -->
+    <!-- Other Links — same 4-col grid, last col intentionally empty -->
     <div class="footer-links footer-links--other">
       <h4 class="footer-links__heading">Other Links</h4>
-      <div class="footer-links__grid footer-links__grid--four">
+      <div class="footer-links__grid row g-4">
         @for (col of otherLinks; track $index) {
-          <ul class="footer-links__col">
-            @for (link of col; track link.label) {
-              <li><a [href]="link.href">{{ link.label }}</a></li>
-            }
-          </ul>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <ul class="footer-links__col">
+              @for (link of col; track link.label) {
+                <li><a [href]="link.href">{{ link.label }}</a></li>
+              }
+            </ul>
+          </div>
         }
-        <div class="footer-links__col footer-links__col--empty" aria-hidden="true"></div>
+        <div class="col-12 col-sm-6 col-lg-3 d-none d-lg-block" aria-hidden="true"></div>
       </div>
     </div>
 

@@ -1,0 +1,2056 @@
+/* ============================================================
+   Farmer Corner — Bulletins (Weather Pattern Advisory)
+   Pixel-matched to Figma frame 121:13625
+   Content box: 1860px, white, cornerRadius 30, padding 15 30 30 30
+============================================================ */
+
+.fc-page {
+  font-family: 'Anek Bangla', sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-section-alt);
+  min-height: 100vh;
+  padding-bottom: 80px;
+}
+
+/* ==================== TAB BAR ====================
+   Self-contained copy of features-tabs so this
+   component is fully independent.
+================================================== */
+.features-tabs {
+  position: sticky;
+  top: 110px;
+  z-index: 990;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-2, var(--primary)) 100%);
+  padding: 15px 130px;
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 15px;
+  }
+}
+
+.features-tab {
+  flex: 1 1 0;
+
+  &__btn {
+    width: 100%;
+    height: 54px;
+    padding: 4px 12px 4px 4px;
+    background: rgba(255, 255, 255, 0.10);
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    transition: background 0.25s ease;
+    text-align: left;
+
+    &:hover { background: rgba(255, 255, 255, 0.18); }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+
+    img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  }
+
+  &__label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+    color: #ffffff;
+    flex: 1 1 auto;
+  }
+
+  &.is-active .features-tab__btn {
+    background: var(--highlight);
+    .features-tab__label { color: var(--primary); font-weight: 700; }
+    &:hover { background: var(--highlight); }
+  }
+}
+
+/* ==================== CONTENT AREA ==================== */
+.fc-content {
+  padding: 40px 30px 0;   /* 40px gap between tab bar and white box */
+}
+
+/* White content box — 1860px, cornerRadius 30 */
+.fc-box {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 15px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;              /* gap between filter section and panel */
+  overflow: visible;      /* allow dropdown popups to overflow */
+}
+
+/* ==================== FILTER SECTION ==================== */
+.fc-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__label-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  &__label {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Individual chip: bg #fef6e7, radius 8, text #312102 */
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fef6e7;
+    border-radius: 8px;
+    padding: 4px 8px;
+    height: 28px;
+  }
+
+  &__chip-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #312102;
+    line-height: 20px;
+  }
+
+  &__chip-close {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(49, 33, 2, 0.15);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #312102;
+    padding: 0;
+    flex-shrink: 0;
+
+    &:hover { background: rgba(49, 33, 2, 0.25); }
+  }
+
+  /* Hide/Show filter toggle button */
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fef6e7;
+    border: 1px solid #fbda9d;
+    border-radius: 8px;
+    padding: 4px 8px;
+    height: 28px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #312102;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &:hover { background: #fde9b8; }
+  }
+
+  /* Filter controls row: selects + buttons */
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    overflow: visible;  /* allow dropdown popups to overflow */
+  }
+}
+
+/* ==================== SELECT INPUTS (floating-label pattern) ==================== */
+.fc-select {
+  flex: 1 1 0;
+  min-width: 140px;
+  position: relative;
+  height: 48px;
+
+  /* Floating label — sits on the top border line */
+  &__label {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    transform: translateY(-50%);
+    background: #ffffff;
+    padding: 0 4px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #191919;
+    z-index: 1;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* The actual trigger button / date input */
+  &__field {
+    width: 100%;
+    height: 48px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 12px;
+    padding: 12px 40px 12px 16px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary);
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    text-align: left;
+
+    &:focus { border-color: var(--primary); }
+
+    /* Date trigger button — same look, cursor pointer */
+    &--date { cursor: pointer; }
+  }
+
+  /* Chevron / calendar icon */
+  &__icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+
+    /* Rotate chevron when open */
+    .is-open & svg { transform: rotate(180deg); }
+
+    /* Calendar icon never rotates */
+    &--calendar svg { transform: none !important; }
+  }
+}
+
+/* ==================== DATE PICKER CALENDAR ==================== */
+.fc-calendar {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 319px;
+  z-index: 300;
+  background: #ffffff;
+  border: 1px solid #b5e3cc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(29, 80, 22, 0.08), 0 12px 40px rgba(29, 80, 22, 0.15);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+
+  /* ── Header ── */
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 28px;
+  }
+
+  &__nav {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: #ecf8f2;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    flex-shrink: 0;
+    transition: background 0.15s;
+
+    &:hover { background: #c8edda; }
+  }
+
+  &__month-year {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__month,
+  &__year {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1;
+
+    svg { opacity: 0.55; flex-shrink: 0; }
+  }
+
+  /* ── Weekday + date grid wrapper (matches Figma "Frame 74043", h:240) ── */
+  &__dates-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* ── Weekday row (h:24) ── */
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    height: 24px;
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Anek Bangla', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+  }
+
+  /* ── Date grid (7 cols × 6 rows, each row h:32, row-gap:4) ── */
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 4px;
+    place-items: center;
+  }
+
+  &__day {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+
+    &:hover:not(.is-selected):not(.is-today) {
+      background: #ecf8f2;
+      border-radius: 8px;
+    }
+
+    &.is-other-month { color: #b0b0b0; }
+
+    &.is-today {
+      background: rgba(111, 212, 96, 0.28);
+      color: var(--primary);
+      font-weight: 700;
+      border-radius: 8px;
+    }
+
+    &.is-selected {
+      background: var(--highlight);
+      color: var(--primary);
+      font-weight: 700;
+      border-radius: 8px;
+    }
+  }
+
+  /* ── Footer ── */
+  &__footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+    padding-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__today-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    padding: 2px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+
+    &:hover { background: #ecf8f2; }
+  }
+}
+
+/* ==================== DROPDOWN POPUP ==================== */
+.fc-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  min-width: 200px;
+  z-index: 300;
+  background: #ffffff;
+  border: 1px solid #b4e4cc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(29, 80, 22, 0.08), 0 12px 40px rgba(29, 80, 22, 0.15);
+  overflow: hidden;
+
+  /* Search row */
+  &__search {
+    padding: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  &__search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    padding: 0 12px;
+    height: 40px;
+    background: #ffffff;
+
+    svg { flex-shrink: 0; }
+
+    input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'Anek Bangla', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--primary);
+
+      &::placeholder { color: #999999; }
+    }
+
+    &:focus-within { border-color: var(--primary); }
+  }
+
+  /* Options list */
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 210px;
+    overflow-y: auto;
+
+    /* Thin scrollbar inside dropdown */
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb { background: #b4e4cc; border-radius: 4px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+  }
+
+  /* Single option row */
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    height: 42px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    transition: background 0.15s;
+
+    &:last-child { border-bottom: none; }
+
+    &:hover:not(.is-selected) { background: rgba(236, 248, 242, 0.5); }
+
+    &.is-selected {
+      background: #ecf8f2;
+    }
+  }
+
+  /* Left accent bar */
+  &__bar {
+    width: 3px;
+    height: 18px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    background: transparent;
+    transition: background 0.15s;
+
+    .is-selected & { background: #3ba12b; }
+  }
+
+  /* Option label */
+  &__text {
+    flex: 1;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #191919;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .is-selected & {
+      color: var(--primary);
+      font-weight: 700;
+    }
+  }
+
+  /* Checkmark */
+  &__check {
+    flex-shrink: 0;
+    color: var(--primary);
+  }
+}
+
+/* Apply / Clear buttons */
+.fc-btn {
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &--apply {
+    background: var(--highlight);
+    color: var(--primary);
+    min-width: 74px;
+    &:hover { opacity: 0.9; }
+  }
+
+  &--clear {
+    background: var(--bg-section-alt);
+    border: 1px solid #b4e4cc;
+    color: var(--primary);
+    min-width: 69px;
+    &:hover { opacity: 0.8; }
+  }
+}
+
+/* ==================== CONTENT PANEL ==================== */
+.fc-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Heading row — custom pentagon background (Figma Frame 74039 / Rectangle 18)
+   Vector path on 1360×59 canvas:
+   M 110 0 L 1250 0 L 1280 48 L 1360 59 L 0 59 L 80 48 L 110 0 Z   */
+.fc-panel__heading-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  width: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(1360px, 100%);
+    background: #f2f2f2;
+    /* percent = pixel / (1360 or 59) */
+    clip-path: polygon(
+      8.09%  0%,
+      91.91% 0%,
+      94.12% 81.36%,
+      100%   100%,
+      0%     100%,
+      5.88%  81.36%
+    );
+  }
+}
+
+.fc-panel__heading {
+  position: relative;
+  z-index: 1;          /* sit above the ::before pentagon */
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.fc-panel__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  color: var(--primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Panel body: gray rounded container — Figma Frame 74036
+   fill=#F2F2F2, cornerRadius=30, clipsContent=true
+   padding: top=20 right=30 bottom=30 left=30, itemSpacing=20 */
+.fc-panel__body {
+  background: #f2f2f2;
+  border-radius: 30px;
+  overflow: hidden;          /* clipsContent: true in Figma */
+  padding: 20px 30px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ==================== TICKER / MARQUEE ==================== */
+.fc-ticker {
+  background: #f5b741;
+  border-radius: 12px;
+  height: 44px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.fc-ticker__track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  white-space: nowrap;
+  animation: fc-ticker-scroll 40s linear infinite;
+  will-change: transform;
+}
+
+.fc-ticker__star {
+  font-size: 14px;
+  color: #312102;
+  flex-shrink: 0;
+}
+
+.fc-ticker__text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #312102;
+  flex-shrink: 0;
+}
+
+@keyframes fc-ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ==================== HEADING ORNAMENT OVERRIDES (Figma: star 24×24, line 63.5px) ==================== */
+/* Only override the global .heading-ornament values inside this component */
+.fc-panel__heading,
+.fc-forecast__heading,
+.fc-summary__heading {
+  .heading-ornament {
+    height: 24px;
+
+    &__line {
+      width: 64px;   /* Figma: 63.5px */
+    }
+
+    &__star {
+      font-size: 20px;
+      line-height: 24px;
+    }
+  }
+}
+
+/* ==================== WEATHER FORECAST ==================== */
+/* Figma Frame 23: fill=#FFFFFF, cornerRadius=30, 1740×464
+   padding: 30px all sides, gap 20px between heading and cards */
+.fc-forecast {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.fc-forecast__heading {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.fc-forecast__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Cards row — 5 cards with 30px gaps */
+.fc-forecast__cards {
+  width: 100%;
+  display: flex;
+  gap: 30px;
+}
+
+/* Individual forecast card */
+.fc-forecast-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #f2f2f2;
+  border-radius: 12px;
+  padding: 0 8px 8px;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    padding: 16px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 26px;
+    color: var(--primary);
+    text-align: center;
+  }
+
+  &__body {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 0 16px;
+    flex: 1;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    height: 48px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+    &:last-child { border-bottom: none; }
+  }
+
+  &__metric {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--primary);
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  &__value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+/* ==================== METRIC ROW ICONS ==================== */
+.fc-row-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+}
+
+/* ==================== SUMMARY PANELS ==================== */
+.fc-summary {
+  display: flex;
+  gap: 20px;
+}
+
+.fc-summary__panel {
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* Both panels are the same green — matches Figma */
+  &--weather,
+  &--advice {
+    background: var(--highlight);
+  }
+}
+
+.fc-summary__heading {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.fc-summary__title {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  color: var(--primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.fc-summary__bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fc-summary__bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  &-star {
+    font-size: 14px;
+    color: var(--primary);
+    flex-shrink: 0;
+    margin-top: 3px;
+    line-height: 1;
+  }
+
+  span:last-child {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--primary);
+  }
+}
+
+/* ==================== DARK THEME ==================== */
+:host-context([data-theme='dark']) {
+  .features-tabs {
+    background: linear-gradient(180deg, #0d0d0d 0%, #404040 100%);
+  }
+
+  .features-tab {
+    &__icon { background: #0d0d0d; }
+
+    &.is-active .features-tab__btn {
+      .features-tab__label { color: #0f280b; }
+    }
+  }
+
+  .fc-box {
+    background: #1a1a1a;
+  }
+
+  .fc-filter__chip          { background: #2a1f0a; }
+  .fc-filter__chip-text     { color: #f5b741; }
+  .fc-filter__chip-close    { color: #f5b741; background: rgba(245, 183, 65, 0.2); }
+  .fc-filter__toggle        { background: #2a1f0a; border-color: rgba(245, 183, 65, 0.4); color: #f5b741; }
+
+  .fc-select {
+    &__label {
+      background: #1a1a1a;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    &__field {
+      background: #262626;
+      border-color: rgba(255, 255, 255, 0.20);
+      color: #ffffff;
+      color-scheme: dark;
+
+      &:focus { border-color: var(--highlight); }
+    }
+
+    &__icon svg path,
+    &__icon svg rect {
+      stroke: rgba(255, 255, 255, 0.55);
+    }
+  }
+
+  .fc-dropdown {
+    background: #1e1e1e;
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.4);
+
+    &__search { border-bottom-color: rgba(255, 255, 255, 0.08); }
+
+    &__search-wrap {
+      background: #262626;
+      border-color: rgba(255, 255, 255, 0.18);
+      svg circle, svg path { stroke: rgba(255, 255, 255, 0.45); }
+      input { color: #ffffff; &::placeholder { color: rgba(255,255,255,0.35); } }
+      &:focus-within { border-color: var(--highlight); }
+    }
+
+    &__item {
+      border-bottom-color: rgba(255, 255, 255, 0.06);
+      &:hover:not(.is-selected) { background: rgba(255, 255, 255, 0.05); }
+      &.is-selected { background: rgba(111, 212, 96, 0.12); }
+    }
+
+    &__bar { .is-selected & { background: var(--highlight); } }
+
+    &__text {
+      color: rgba(255, 255, 255, 0.85);
+      .is-selected & { color: var(--highlight); }
+    }
+
+    &__check { color: var(--highlight); }
+  }
+
+  .fc-calendar {
+    background: #1e1e1e;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 12px 40px rgba(0,0,0,0.4);
+
+    &__nav {
+      background: #2a2a2a;
+      color: var(--highlight);
+      &:hover { background: #333333; }
+    }
+
+    &__month, &__year { color: #ffffff; svg { color: #ffffff; } }
+
+    &__weekdays span { color: rgba(255,255,255,0.6); }
+
+    &__day {
+      color: rgba(255,255,255,0.85);
+      &:hover:not(.is-selected):not(.is-today) { background: rgba(255,255,255,0.08); }
+      &.is-other-month { color: rgba(255,255,255,0.25); }
+      &.is-today { background: rgba(111,212,96,0.22); color: var(--highlight); }
+      &.is-selected { background: var(--highlight); color: #0f280b; }
+    }
+
+    &__footer { border-top-color: rgba(255,255,255,0.08); }
+    &__today-btn { color: var(--highlight); &:hover { background: rgba(111,212,96,0.12); } }
+  }
+
+  .fc-btn--clear { background: #262626; border-color: rgba(255, 255, 255, 0.15); color: #ffffff; }
+
+  .fc-panel__heading-row::before { background: #2a2a2a; }
+  .fc-panel__title { color: #ffffff; }
+  .fc-panel__body  { background: #1a1a1a; }
+  .fc-forecast     { background: #262626; }
+
+  .fc-forecast__title  { color: var(--highlight); }
+  .fc-forecast-card {
+    background: #0d0d0d;
+    &__header { color: #ffffff; }
+    &__body   { background: #262626; }
+    &__row    { border-bottom-color: rgba(255, 255, 255, 0.08); }
+    &__metric { color: #b0b0b0; }
+    &__value  { color: #ffffff; }
+  }
+
+  .fc-summary__title { color: #0f280b; }
+  .fc-summary__bullet {
+    &-star { color: #0f280b; }
+    span:last-child { color: #0f280b; }
+  }
+}
+
+/* ==================== CROP ADVISORY ==================== */
+/* Figma Frame 23: fill=#FFFFFF, cornerRadius=30, padding=30, gap=20, VERTICAL */
+.ca-content {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Advisory description — Figma: fontSize=20, fontWeight=500, CENTER align */
+.ca-desc {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--primary);
+  margin: 0;
+  text-align: center;
+}
+
+/* Figma Frame 74073: HORIZONTAL, gap=30 */
+.ca-cards {
+  display: flex;
+  gap: 30px;
+}
+
+/* ── Individual crop card ──
+   Figma Component 16: 398×452
+   fill=#F2F2F2, cornerRadius=20, padding=8 all, VERTICAL, clipsContent=true ── */
+.ca-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #f2f2f2;            /* outer gray "frame" — 8px visible on all sides */
+  border-radius: 20px;
+  overflow: hidden;               /* clipsContent=true — rounds inner corners too */
+  padding: 8px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.20); /* Figma: inside stroke, white 20%, 1px */
+  backdrop-filter: blur(100px);   /* Figma GLASS effect: radius=100 */
+  -webkit-backdrop-filter: blur(100px);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 16px 40px rgba(23, 65, 44, 0.14),
+      inset 0 0 0 1px rgba(111, 212, 96, 0.50);
+  }
+
+  /* ── White top section (Figma Frame 84: fill=#FFFFFF, 382×258) ──
+     Contains image area (220px) + badge row (38px) ── */
+  &__top {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border-radius: 20px 20px 0 0; /* Figma Frame 84: tl=20, tr=20, bl=0, br=0 */
+    overflow: hidden;
+  }
+
+  /* ── Image area (Frame 74091): 382×220, no fill ── */
+  &__img-wrap {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover &__img {
+    transform: scale(1.06);
+  }
+
+  /* ── Badge (Figma Frame 74087: full-width, no fill, padding 0 16px)
+     Inner (Frame 74085: 350×38, fill=#DAF1E5, no cornerRadius) ── */
+  &__badge {
+    height: 38px;
+    flex-shrink: 0;
+    margin: 0 16px;              /* 16px inset → 382−32 = 350px wide = Frame 74085 */
+    background: #daf1e5;
+    border-radius: 12px 12px 0 0; /* Figma Frame 74085: tl=12, tr=12, bl=0, br=0 */
+    border: 1px solid #b5e3cb;   /* Figma stroke: rgb(181,227,203), weight top/left/right=1, bottom=0 */
+    border-bottom: none;
+    padding: 8px 12px;           /* Figma: top=8 bottom=8 left=12 right=12 */
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;                   /* Figma itemSpacing=10 */
+  }
+
+  &__badge-label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  &__badge-value {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: right;
+  }
+
+  /* ── Body section (Frame 74090): no fill → #f2f2f2 shows through
+     padding: t=20 r=16 b=16 l=16, gap=20 ── */
+  &__body {
+    padding: 20px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  /* Figma: fontSize=22, fontWeight=700, color=#17412C */
+  &__name {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  /* Figma: fontSize=14, fontWeight=500, color=#17412C */
+  &__desc {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  /* ── Button (Component 32): 131×44, cornerRadius=100, fill=#6FD460
+     Layout: padding pl=16 + text (67px) + gap(8) + right white-circle (36×36) + padding pr=4 ── */
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    background: var(--highlight);
+    border: none;
+    border-radius: 100px;
+    font-family: 'Anek Bangla', sans-serif;
+    cursor: pointer;
+    align-self: flex-start;
+    flex-shrink: 0;
+    padding: 4px 4px 4px 16px;   /* Figma: pt=4, pb=4, pl=16, pr=4 */
+    gap: 8px;                     /* Figma: itemSpacing=8 */
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 0.85; }
+  }
+
+  &__btn-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  &__btn-arrow {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;          /* Figma Frame 1: white background */
+    border-radius: 50%;
+    color: var(--primary);
+  }
+}
+
+/* Dark theme for crop advisory */
+:host-context([data-theme='dark']) {
+  .ca-content { background: #262626; }
+  .ca-desc    { color: rgba(255, 255, 255, 0.85); }
+
+  .ca-card {
+    background: #1a1a1a;
+
+    &:hover {
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.40),
+        inset 0 0 0 1px rgba(111, 212, 96, 0.30);
+    }
+
+    &__top        { background: #262626; }
+    &__badge      { background: rgba(111, 212, 96, 0.15); }
+    &__badge-label,
+    &__badge-value { color: var(--highlight); }
+    &__name       { color: #ffffff; }
+    &__desc       { color: rgba(255, 255, 255, 0.75); }
+    &__btn-arrow  { background: rgba(255, 255, 255, 0.85); }
+    &__btn-text   { color: var(--primary); }
+  }
+}
+
+/* ==================== CROP ADVISORY POPUP ==================== */
+/* Figma: popup 750×630, cornerRadius=30, padding=30, gap=30, fill=#fff, stroke 1px #b4e4cc INSIDE */
+
+.ca-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Wrapper: position:relative so __close can sit outside the scrollable popup */
+.ca-popup-wrapper {
+  position: relative;
+  max-width: 750px;
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Close button (Figma Frame 36): 44×44, radius 100, fill #ecf8f2
+   Icon: plus-path rotated -45° → X, stroke #17412c, weight 2
+   Sits on the wrapper (overflow:visible) so it is never clipped */
+.ca-popup__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ecf8f2;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #17412c;
+  flex-shrink: 0;
+  z-index: 2;
+  transition: background 0.15s, transform 0.15s;
+
+  &:hover { background: #c8edda; transform: scale(1.08); }
+}
+
+.ca-popup {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  /* Figma inside stroke 1px #b4e4cc + drop shadow */
+  box-shadow:
+    inset 0 0 0 1px #b4e4cc,
+    0 20px 60px rgba(0, 0, 0, 0.18);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  overflow-x: hidden; /* no horizontal scroll */
+
+  /* Thin scrollbar */
+  &::-webkit-scrollbar         { width: 6px; }
+  &::-webkit-scrollbar-thumb   { background: #b4e4cc; border-radius: 6px; }
+  &::-webkit-scrollbar-track   { background: transparent; }
+
+  /* ── Title row: ornament + "કૃષિ સલાહ" + ornament ── */
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-shrink: 0;
+
+    /* Reuse global heading-ornament sizes */
+    .heading-ornament {
+      height: 24px;
+      &__line { width: 64px; }
+      &__star { font-size: 20px; line-height: 24px; }
+    }
+  }
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 30px;
+    color: var(--primary);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* ── Advisory list (Figma Frame 74092): gap=20 ── */
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Advisory item (Figma Frame 74081):
+     fill=#ecf8f2, radius=10, padding=10, gap=8 ── */
+  &__item {
+    background: #ecf8f2;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 8px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* 4-pointed star 16×16, fill=#17412c (Figma Star 3) */
+  &__item-star {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--primary);
+  }
+
+  /* Advisory text: fontSize=14, fontWeight=500, color=#17412c */
+  &__item-text {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    color: var(--primary);
+  }
+}
+
+/* Dark theme popup */
+:host-context([data-theme='dark']) {
+  /* Close button is now on wrapper (top-level), not inside .ca-popup */
+  .ca-popup__close {
+    background: #2a2a2a;
+    color: var(--highlight);
+    &:hover { background: #333333; }
+  }
+
+  .ca-popup {
+    background: #1e1e1e;
+    box-shadow:
+      inset 0 0 0 1px rgba(180, 228, 204, 0.25),
+      0 20px 60px rgba(0, 0, 0, 0.5);
+
+    &__title { color: rgba(255, 255, 255, 0.92); }
+
+    &__item { background: rgba(111, 212, 96, 0.10); }
+
+    &__item-star { color: var(--highlight); }
+    &__item-text { color: rgba(255, 255, 255, 0.85); }
+  }
+}
+
+/* ==================== PEST & DISEASE INFESTATION ==================== */
+/* Figma Frame 23: fill=#FFFFFF, cornerRadius=30, padding=30, gap=20, VERTICAL */
+.pd-content {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Advisory description — Figma: fontSize=20, fontWeight=500 */
+.pd-desc {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--primary);
+  margin: 0;
+  text-align: center;
+}
+
+/* Figma Frame 74090: HORIZONTAL, gap=30 */
+.pd-cards {
+  display: flex;
+  gap: 30px;
+}
+
+/* ── Individual pest-disease card ──
+   Figma Component 16: 398×452, fill=#F2F2F2, cornerRadius=20 ── */
+.pd-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #f2f2f2;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 8px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.20);
+  backdrop-filter: blur(100px);
+  -webkit-backdrop-filter: blur(100px);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 16px 40px rgba(23, 65, 44, 0.14),
+      inset 0 0 0 1px rgba(111, 212, 96, 0.50);
+  }
+
+  /* ── White top section (Figma Frame 84: fill=#FFFFFF, 382×258) ── */
+  &__top {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+  }
+
+  /* ── Image area: 382×220 ── */
+  &__img-wrap {
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover &__img {
+    transform: scale(1.06);
+  }
+
+  /* ── Pest type badge (Figma: fill=#DAF1E5, tl=12 tr=12, stroke #b5e3cb) ── */
+  &__badge {
+    height: 38px;
+    flex-shrink: 0;
+    margin: 0 16px;
+    background: #daf1e5;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid #b5e3cb;
+    border-bottom: none;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  &__badge-label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  &__badge-value {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ── Body section: padding=20 16 16 16, gap=20 ── */
+  &__body {
+    padding: 20px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  /* Figma: fontSize=22, fontWeight=700, color=#17412C */
+  &__name {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0;
+  }
+
+  /* Figma: fontSize=14, fontWeight=500, color=#312102 */
+  &__desc {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #312102;
+    margin: 0;
+  }
+
+  /* ── Button (Component 33): 194×44, radius=100, fill=#6FD460 ── */
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    background: var(--highlight);
+    border: none;
+    border-radius: 100px;
+    font-family: 'Anek Bangla', sans-serif;
+    cursor: pointer;
+    align-self: flex-start;
+    flex-shrink: 0;
+    padding: 4px 4px 4px 16px;
+    gap: 8px;
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 0.85; }
+  }
+
+  &__btn-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  &__btn-arrow {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 50%;
+    color: var(--primary);
+  }
+}
+
+/* Dark theme for pest-disease cards */
+:host-context([data-theme='dark']) {
+  .pd-content { background: #262626; }
+  .pd-desc    { color: rgba(255, 255, 255, 0.85); }
+
+  .pd-card {
+    background: #1a1a1a;
+
+    &:hover {
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.40),
+        inset 0 0 0 1px rgba(111, 212, 96, 0.30);
+    }
+
+    &__top        { background: #262626; }
+    &__badge      { background: rgba(111, 212, 96, 0.15); border-color: rgba(111, 212, 96, 0.20); }
+    &__badge-label,
+    &__badge-value { color: var(--highlight); }
+    &__name       { color: #ffffff; }
+    &__desc       { color: rgba(255, 255, 255, 0.75); }
+    &__btn-arrow  { background: rgba(255, 255, 255, 0.85); }
+    &__btn-text   { color: var(--primary); }
+  }
+}
+
+/* ==================== PEST & DISEASE POPUP ==================== */
+/* Figma: popup 750×350, cornerRadius=30, fill=#fff, stroke 1px #b4e4cc */
+
+.pd-popup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.pd-popup-wrapper {
+  position: relative;
+  max-width: 750px;
+  width: 100%;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close button — same as CA popup (Frame 36: 44×44, fill #ecf8f2) */
+.pd-popup__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ecf8f2;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #17412c;
+  flex-shrink: 0;
+  z-index: 2;
+  transition: background 0.15s, transform 0.15s;
+
+  &:hover { background: #c8edda; transform: scale(1.08); }
+}
+
+.pd-popup {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  box-shadow:
+    inset 0 0 0 1px #b4e4cc,
+    0 20px 60px rgba(0, 0, 0, 0.18);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Thin scrollbar */
+  &::-webkit-scrollbar         { width: 6px; }
+  &::-webkit-scrollbar-thumb   { background: #b4e4cc; border-radius: 6px; }
+  &::-webkit-scrollbar-track   { background: transparent; }
+
+  /* ── Title row ── */
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-shrink: 0;
+
+    .heading-ornament {
+      height: 24px;
+      &__line { width: 64px; }
+      &__star { font-size: 20px; line-height: 24px; }
+    }
+  }
+
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 30px;
+    color: var(--primary);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* ── Advisory list (Figma Frame 74092): gap=20 ── */
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── Advisory item (Figma Frame 74081): fill=#ecf8f2, padding=10 ── */
+  &__item {
+    background: #ecf8f2;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 8px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* Diamond star 16×16, fill=#17412c */
+  &__item-star {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--primary);
+  }
+
+  /* Advisory text: fontSize=16, fontWeight=500, color=#17412c */
+  &__item-text {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--primary);
+  }
+}
+
+/* Dark theme pest popup */
+:host-context([data-theme='dark']) {
+  .pd-popup__close {
+    background: #2a2a2a;
+    color: var(--highlight);
+    &:hover { background: #333333; }
+  }
+
+  .pd-popup {
+    background: #1e1e1e;
+    box-shadow:
+      inset 0 0 0 1px rgba(180, 228, 204, 0.25),
+      0 20px 60px rgba(0, 0, 0, 0.5);
+
+    &__title { color: rgba(255, 255, 255, 0.92); }
+
+    &__item { background: rgba(111, 212, 96, 0.10); }
+
+    &__item-star { color: var(--highlight); }
+    &__item-text { color: rgba(255, 255, 255, 0.85); }
+  }
+}
+
+/* ==================== SOIL MOISTURE & CROP STRESS STATUS (Shared Layout) ==================== */
+
+/* Outer white container — same pattern as ca-content / pd-content */
+.status-content {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Centred description paragraph */
+.status-desc {
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  color: var(--primary);
+  margin: 0;
+  text-align: center;
+}
+
+/* Horizontal row: left card + right panel */
+.status-row {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* ── Left info card ──
+   Figma: 403×310, fill=#f7f7f7, cornerRadius=20, padding=20, gap=16 */
+.status-card {
+  flex: 0 0 300px;
+  min-width: 0;
+  background: #f7f7f7;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  /* Top area: location info + badge side-by-side */
+  &__info-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__locations {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__location {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* Figma: District/Taluk label — 14px/600/#17412c */
+  &__label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    line-height: 20px;
+  }
+
+  /* Figma: District/Taluk value — 18px/700/#17412c */
+  &__value {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 26px;
+  }
+
+  /* Figma: Badge — fill=#6fd460, pill shape, 18px/700/#17412c */
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--highlight);
+    color: var(--primary);
+    border-radius: 100px;
+    padding: 5px 16px;
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Plant illustration — fills remaining space */
+  &__img-wrap {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 100px;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    object-position: center bottom;
+    display: block;
+  }
+}
+
+/* ── Right summary panel ──
+   Figma: fill=#17412c, cornerRadius=30, padding=30, gap=20 */
+.status-panel {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--primary);   /* #17412c */
+  border-radius: 30px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  /* Title row: ornaments + "સારાંશ" — set color so ornaments inherit highlight */
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    color: var(--highlight);     /* makes ornament lines/stars highlight-colored */
+
+    .heading-ornament {
+      height: 24px;
+      &__line  { width: 64px; background: var(--highlight); }
+      &__star  { color: var(--highlight); }
+    }
+  }
+
+  /* "સારાંશ" — Figma: 22px/700/#6fd460 */
+  &__title {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--highlight);
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* ── Crop Stress stat boxes (2×2 grid) ── */
+  &__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* Individual stat box — Figma: fill=rgba(255,255,255,0.08), radius=16 */
+  &__stat {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Value number — Figma: 24px/700/#6fd460 */
+  &__stat-value {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--highlight);
+    line-height: 1;
+  }
+
+  /* Label text — Figma: 16px/700/white */
+  &__stat-label {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.4;
+  }
+
+  /* Satellite description — Figma: 18px/700/white (the bold advisory text block) */
+  &__satellite {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* 2-column grid for bullet items */
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+  }
+
+  /* Individual bullet row */
+  &__bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  /* 4-pointed star icon — highlight color */
+  &__bullet-star {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: var(--highlight);
+  }
+
+  /* Bullet text — Figma: 16px/500/white */
+  &__bullet-text {
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #ffffff;
+  }
+}
+
+/* Dark theme for status tabs */
+:host-context([data-theme='dark']) {
+  .status-content { background: #262626; }
+  .status-desc    { color: rgba(255, 255, 255, 0.85); }
+
+  .status-card {
+    background: #1a1a1a;
+    &__label { color: rgba(255, 255, 255, 0.55); }
+    &__value { color: #ffffff; }
+  }
+
+  /* Panel is already dark green — minor overlay adjustments only */
+  .status-panel {
+    &__stat  { background: rgba(255, 255, 255, 0.06); }
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1400px) {
+  .features-tabs { padding: 15px 40px; }
+  .fc-content    { padding: 40px 20px 0; }
+  .fc-panel__title { font-size: 22px; }
+}
+
+@media (max-width: 1100px) {
+  .fc-forecast__cards { flex-wrap: wrap; }
+  .fc-forecast-card   { flex: 1 1 calc(50% - 15px); }
+  .fc-summary         { flex-direction: column; }
+  .ca-cards           { flex-wrap: wrap; }
+  .ca-card            { flex: 1 1 calc(50% - 15px); }
+  .pd-cards           { flex-wrap: wrap; }
+  .pd-card            { flex: 1 1 calc(50% - 15px); }
+  .status-row         { flex-wrap: wrap; }
+  .status-card        { flex: 1 1 100%; }
+  .status-panel__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .features-tabs { padding: 15px 16px; }
+  .features-tab  { flex: 1 1 100%; }
+  .features-tab__btn { height: auto; padding: 10px 14px; }
+
+  .fc-box        { padding: 12px 16px 20px; border-radius: 20px; }
+  .fc-filter__controls { flex-wrap: wrap; }
+  .fc-select     { flex: 1 1 calc(50% - 5px); }
+
+  .fc-forecast__cards { flex-direction: column; }
+  .fc-forecast-card   { flex: none; }
+  .fc-panel__title    { font-size: 18px; }
+
+  .status-content     { padding: 20px 16px; border-radius: 20px; }
+  .status-panel       { padding: 20px; border-radius: 20px; }
+  .status-panel__grid { grid-template-columns: 1fr; }
+  .status-panel__stats{ grid-template-columns: 1fr 1fr; }
+  .status-panel__heading { gap: 20px; }
+
+  .ca-content         { padding: 20px 16px; border-radius: 20px; }
+  .ca-cards           { flex-direction: column; gap: 20px; }
+  .ca-card            { flex: none; }
+  .ca-card__top       { border-radius: 20px 20px 0 0; }
+
+  .ca-popup-overlay    { padding: 12px; }
+  .ca-popup-wrapper    { max-height: calc(100vh - 24px); }
+  .ca-popup            { border-radius: 20px; padding: 20px; gap: 20px; max-height: calc(100vh - 24px); }
+  .ca-popup__title     { font-size: 18px; }
+  .ca-popup__close     { top: -10px; right: -10px; width: 36px; height: 36px; }
+  .ca-popup__title-row { gap: 20px; }
+
+  .pd-content         { padding: 20px 16px; border-radius: 20px; }
+  .pd-cards           { flex-direction: column; gap: 20px; }
+  .pd-card            { flex: none; }
+  .pd-card__top       { border-radius: 20px 20px 0 0; }
+
+  .pd-popup-overlay    { padding: 12px; }
+  .pd-popup-wrapper    { max-height: calc(100vh - 24px); }
+  .pd-popup            { border-radius: 20px; padding: 20px; gap: 20px; max-height: calc(100vh - 24px); }
+  .pd-popup__title     { font-size: 18px; }
+  .pd-popup__close     { top: -10px; right: -10px; width: 36px; height: 36px; }
+  .pd-popup__title-row { gap: 20px; }
+}

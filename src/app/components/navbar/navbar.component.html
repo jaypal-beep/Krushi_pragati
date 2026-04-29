@@ -22,7 +22,7 @@
       <div class="header-right__top">
         <!-- Screen reader / A- A A+ / English / Help pill -->
         <div class="pill pill--access">
-          <a href="javascript:void(0)" class="sr-link">Screen Reader Access</a>
+          <a href="javascript:void(0)" class="sr-link" (click)="openA11y()">Screen Reader Access</a>
           <div class="font-controls">
             <button (click)="setFontSize('small')" [class.active]="fontSize() === 'small'" aria-label="Decrease font size">A-</button>
             <button (click)="setFontSize('normal')" [class.active]="fontSize() === 'normal'" aria-label="Normal font size">A</button>
@@ -79,9 +79,15 @@
       <!-- BOTTOM ROW: nav menu -->
       <nav class="header-nav" role="navigation" aria-label="Primary">
         <ul class="nav-list">
-          @for (item of navItems; track item.label) {
-            <li>
-              <a [href]="item.link" class="nav-link">
+          @for (item of navItems; track item.label; let i = $index) {
+            <li
+              class="nav-item"
+              [class.has-submenu]="item.submenu?.length"
+              [class.is-open]="activeSubmenu() === i"
+              (mouseenter)="openSubmenu(i)"
+              (mouseleave)="scheduleCloseSubmenu()"
+            >
+              <a [routerLink]="item.link" class="nav-link" (click)="openSubmenu(i)">
                 {{ item.label }}
                 @if (item.hasDropdown) {
                   <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
@@ -89,6 +95,24 @@
                   </svg>
                 }
               </a>
+
+              @if (item.submenu?.length && activeSubmenu() === i) {
+                <div
+                  class="submenu"
+                  (mouseenter)="cancelCloseSubmenu()"
+                  (mouseleave)="scheduleCloseSubmenu()"
+                  role="menu"
+                >
+                  @for (sub of item.submenu; track sub.label) {
+                    <a class="submenu__card" [routerLink]="sub.link" role="menuitem" (click)="closeSubmenu()">
+                      <span class="submenu__icon">
+                        <img [src]="asset(sub.icon)" [alt]="sub.label + ' icon'" width="34" height="34" />
+                      </span>
+                      <span class="submenu__label">{{ sub.label }}</span>
+                    </a>
+                  }
+                </div>
+              }
             </li>
           }
         </ul>

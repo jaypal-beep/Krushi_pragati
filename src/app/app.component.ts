@@ -1,37 +1,23 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { HeroComponent } from './components/hero/hero.component';
-import { AgricultureScenarioComponent } from './components/agriculture-scenario/agriculture-scenario.component';
-import { OfferingsComponent } from './components/offerings/offerings.component';
-import { SmartDecisionsComponent } from './components/smart-decisions/smart-decisions.component';
-import { ObjectivesComponent } from './components/objectives/objectives.component';
-import { InsightsAdvisoriesComponent } from './components/insights-advisories/insights-advisories.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { AccessibilityPanelComponent } from './components/accessibility-panel/accessibility-panel.component';
+import { AccessibilityService } from './services/accessibility.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    RouterOutlet,
     NavbarComponent,
-    HeroComponent,
-    AgricultureScenarioComponent,
-    OfferingsComponent,
-    SmartDecisionsComponent,
-    ObjectivesComponent,
-    InsightsAdvisoriesComponent,
     FooterComponent,
+    AccessibilityPanelComponent,
   ],
   template: `
     <app-navbar />
     <main>
-      <app-hero />
-      <app-agriculture-scenario />
-      <app-offerings />
-      <div class="cta-section">
-        <app-smart-decisions />
-        <app-objectives />
-      </div>
-      <app-insights-advisories />
+      <router-outlet />
     </main>
     <app-footer />
 
@@ -48,45 +34,19 @@ import { FooterComponent } from './components/footer/footer.component';
           <path d="M9 14V4M4 9l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-      <button type="button" class="fab fab--access" aria-label="Accessibility options">
+      <button type="button" class="fab fab--access" aria-label="Accessibility options" (click)="openA11y()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <circle cx="12" cy="4" r="2" />
           <path d="M5 9l4 1v5l-1 6h2l1-5 1 5h2l-1-6v-5l4-1V7l-5 1h-2l-5-1z" />
         </svg>
       </button>
     </div>
+
+    <!-- Accessibility slide-in panel (fixed overlay) -->
+    <app-accessibility-panel />
   `,
   styles: [
     `
-      .cta-section {
-        position: relative;
-        background: url('/assets/images/CTA_Background.jpg') center / cover no-repeat;
-        background-color: #9fbe98;
-        overflow: hidden;
-      }
-      .cta-section::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, var(--primary-light) 0%, transparent 18%);
-        pointer-events: none;
-        z-index: 0;
-      }
-      .cta-section::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 55%;
-        width: 140%;
-        height: 680px;
-        transform: translateX(-50%);
-        background: radial-gradient(ellipse at center, rgba(7, 20, 5, 0.7) 0%, rgba(7, 20, 5, 0) 70%);
-        filter: blur(60px);
-        pointer-events: none;
-        z-index: 0;
-      }
-      .cta-section > * { position: relative; z-index: 1; }
-
       /* ---- Sticky floating action buttons (bottom-right) ---- */
       .sticky-fab {
         position: fixed;
@@ -145,6 +105,8 @@ import { FooterComponent } from './components/footer/footer.component';
   ],
 })
 export class AppComponent {
+  private a11y = inject(AccessibilityService);
+
   readonly showBackToTop = signal(false);
 
   @HostListener('window:scroll')
@@ -154,5 +116,9 @@ export class AppComponent {
 
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  openA11y(): void {
+    this.a11y.open();
   }
 }
